@@ -22,3 +22,6 @@ web/*.tsbuildinfo
 
 # screenshots used while building
 clean/
+
+# Stage A sheet exports (contain email-derived data)
+migration-data/

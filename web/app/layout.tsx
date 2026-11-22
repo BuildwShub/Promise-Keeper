@@ -15,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Link href="/">Promise Keeper</Link>
           <Link href="/items">Items</Link>
           <Link href="/metrics">Metrics</Link>
+          <Link href="/admin/eval">Eval</Link>
           <Link href="/settings">Settings</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/data-deletion">Delete my data</Link>

@@ -137,6 +137,18 @@ export async function sweepUser(db: SupabaseClient, user: UserCtx, deadlineMs: n
 export async function handlePush(db: SupabaseClient, emailAddress: string, historyId: string): Promise<{ enqueued: number }> {
   const { data: u } = await db.from('users').select('id,email,timezone').ilike('email', emailAddress).maybeSingle();
   if (!u) return { enqueued: 0 };
+  // Every push and every failure is recorded in `events`, so delivery problems are visible without server logs.
+  try {
+    const r = await handlePushFor(db, u, historyId);
+    await db.from('events').insert({ user_id: u.id, event: 'push', meta: { historyId, enqueued: r.enqueued } });
+    return r;
+  } catch (e) {
+    await db.from('events').insert({ user_id: u.id, event: 'push_error', meta: { historyId, error: String((e as Error).message ?? e).slice(0, 300) } });
+    throw e;
+  }
+}
+
+async function handlePushFor(db: SupabaseClient, u: UserCtx, historyId: string): Promise<{ enqueued: number }> {
   const { data: tok } = await db.from('oauth_tokens').select('refresh_token_enc,gmail_history_id').eq('user_id', u.id).maybeSingle();
   if (!tok) return { enqueued: 0 };
   const access = await accessTokenFor(decrypt(tok.refresh_token_enc));

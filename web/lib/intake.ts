@@ -152,6 +152,8 @@ export async function handlePush(db: SupabaseClient, emailAddress: string, histo
     ids = (await listIds(access, CONFIG.SCAN_QUERY, CONFIG.SCAN_LIMIT)).map((r) => r.id);
   }
   const enqueued = await enqueue(db, u.id, ids);
+  // Process what was just queued so the item appears within about a minute (the 5-minute sweep is only the safety net).
+  if (enqueued) await drainQueue(db, u, access, Date.now() + 20_000);
   // Only move the cursor forward.
   const next = BigInt(historyId) > BigInt(tok.gmail_history_id ?? '0') ? historyId : tok.gmail_history_id;
   await db.from('oauth_tokens').update({ gmail_history_id: next, updated_at: new Date().toISOString() }).eq('user_id', u.id);

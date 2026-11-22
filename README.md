@@ -194,6 +194,8 @@ cd web && npm test             # 63 tests · crypto, JWT, add-on token checks, c
 
 ## 📍 Project status
 
+> **All 8 phases (0–7) are complete.** Stage A (Apps Script add-on) and Stage B (Vercel + Supabase) are both built, tested and verified live with test users.
+
 | Phase | Scope | State |
 | --- | --- | --- |
 | 0–6 | Add-on: extraction, evaluation gate, Tasks/Calendar, sidebar, morning digest, nudges, metrics, onboarding | ✅ Complete and verified |
@@ -204,7 +206,7 @@ cd web && npm test             # 63 tests · crypto, JWT, add-on token checks, c
 | 7 · Stage 5 | Dashboard: Items (Accept/Edit/Dismiss/Done → Tasks + Calendar), Metrics, Eval | ✅ Done |
 | 7 · Stage 6 | Morning digest via Resend with signed open/click tracking · one-tap nudge drafts | ✅ Done |
 | 7 · Stage 7 | Sheet → Postgres migration · Eval gate re-run on the web pipeline (**same result as the add-on: P 1.0, R 0.778, date acc 1.0, PASS**) | ✅ Done |
-| Next | Google OAuth verification + CASA security assessment for public launch — see [docs/google-verification.md](docs/google-verification.md) | ⏳ Not started |
+| After the build | *Optional, only for a public launch:* Google OAuth verification + CASA security assessment — see [docs/google-verification.md](docs/google-verification.md) | Not part of the 8 phases |
 
 ### Known limits
 

@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { adminClient, userClient } from '@/lib/supabase';
 import { acceptItem, dismissItem, editItem, markDone } from '@/lib/actions';
-import { createNudgeDraft } from '@/lib/nudge';
 import { Dates, OutputsFmt } from '@/lib/shared';
 
 export const metadata = { title: 'Items · Promise Keeper' };
@@ -30,21 +29,6 @@ async function act(fn: (uid: string, id: string, form: FormData) => Promise<unkn
 async function acceptAction(form: FormData) { 'use server'; await act((u, i) => acceptItem(adminClient(), u, i), form); }
 async function dismissAction(form: FormData) { 'use server'; await act((u, i) => dismissItem(adminClient(), u, i), form); }
 async function doneAction(form: FormData) { 'use server'; await act((u, i) => markDone(adminClient(), u, i), form); }
-async function nudgeAction(form: FormData) {
-  'use server';
-  const uid = await uidOrNull();
-  const id = String(form.get('id') ?? '');
-  const tab = String(form.get('tab') ?? 'open');
-  if (!uid || !/^[0-9a-f-]{36}$/i.test(id)) return;
-  let notice: string;
-  try {
-    const r = await createNudgeDraft(adminClient(), uid, id);
-    notice = r.usedFallback ? 'Draft created in Gmail (standard wording). Review it in Drafts before sending.' : 'Draft created in Gmail. Review it in Drafts before sending.';
-  } catch (e) {
-    notice = 'Could not create the draft: ' + String((e as Error).message ?? e).slice(0, 120);
-  }
-  redirect(`/items?tab=${tab}&notice=${encodeURIComponent(notice)}`);
-}
 async function editAction(form: FormData) {
   'use server';
   await act((u, i, f) => editItem(adminClient(), u, i, {
@@ -120,7 +104,7 @@ export default async function Items({ searchParams }: { searchParams: Promise<{ 
                 {(it.status === 'suggested') && <form action={acceptAction}><input type="hidden" name="id" value={it.id} /><button type="submit">Accept</button></form>}
                 {(it.status === 'accepted' || it.status === 'possibly_resolved') && <form action={doneAction}><input type="hidden" name="id" value={it.id} /><button type="submit">{it.status === 'possibly_resolved' ? 'They delivered: mark done' : 'Mark done'}</button></form>}
                 {it.status !== 'dismissed' && it.status !== 'done' && <a href={`/items?tab=${tab}&edit=${it.id}`}><button type="button">Edit</button></a>}
-                {it.type === 'waiting_on' && it.status !== 'dismissed' && it.status !== 'done' && <form action={nudgeAction}><input type="hidden" name="id" value={it.id} /><input type="hidden" name="tab" value={tab} /><button type="submit">Draft follow-up</button></form>}
+                {it.type === 'waiting_on' && it.status !== 'dismissed' && it.status !== 'done' && <form method="post" action="/api/nudge"><input type="hidden" name="id" value={it.id} /><input type="hidden" name="tab" value={tab} /><button type="submit">Draft follow-up</button></form>}
                 {it.status !== 'dismissed' && it.status !== 'done' && <form action={dismissAction}><input type="hidden" name="id" value={it.id} /><button type="submit">Dismiss</button></form>}
               </div>
             )}

@@ -16,9 +16,15 @@ export async function POST(req: Request) {
   const token = new URL(req.url).searchParams.get('token');
   if (!secretMatches(token)) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   try {
-    const body = await req.json();
-    const data = JSON.parse(Buffer.from(String(body?.message?.data ?? ''), 'base64').toString('utf8'));
-    if (!data.emailAddress || !data.historyId) return new NextResponse(null, { status: 204 }); // not ours: ack so Pub/Sub stops retrying
+    // A message we cannot read is acked (204) so Pub/Sub does not redeliver it forever.
+    let data: { emailAddress?: string; historyId?: string | number };
+    try {
+      const body = await req.json();
+      data = JSON.parse(Buffer.from(String(body?.message?.data ?? ''), 'base64').toString('utf8'));
+    } catch {
+      return new NextResponse(null, { status: 204 });
+    }
+    if (!data.emailAddress || !data.historyId) return new NextResponse(null, { status: 204 });
     const r = await handlePush(adminClient(), String(data.emailAddress), String(data.historyId));
     return NextResponse.json({ ok: true, ...r });
   } catch (e) {

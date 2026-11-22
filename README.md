@@ -13,7 +13,7 @@ It finds what *you* promised, what others asked of *you*, hard deadlines, and wh
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%2B%20RLS-3ECF8E?logo=supabase&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Gemini-3.5%20Flash--Lite-8E75B2?logo=googlegemini&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-104%20passing-2EA44F)
+![Tests](https://img.shields.io/badge/tests-152%20passing-2EA44F)
 
 [How it works](#-how-it-works) · [Features](#-features) · [Architecture](#-architecture) · [Quick start](#-quick-start) · [Security](#-security--privacy) · [Status](#-project-status)
 
@@ -110,7 +110,7 @@ flowchart TB
 | Trigger | Hourly time-based trigger | Gmail push (Pub/Sub) + scheduled sweep |
 | Auth | Add-on scopes | Auth.js Google OAuth, offline refresh token (AES-256-GCM) |
 | Users | Single user | Multi-user |
-| Status | ✅ Complete and verified | 🚧 In progress — see [status](#-project-status) |
+| Status | ✅ Complete and verified | ✅ Live (test users only) |
 
 ### Tech stack
 
@@ -165,13 +165,13 @@ Full walkthrough for installing on another Google account: [`docs/tester-setup.m
    npm run dev                # http://localhost:3000
    ```
 
-Click-by-click guide: [`docs/stage-b-setup.md`](docs/stage-b-setup.md).
+Click-by-click guides: [`docs/stage-b-setup.md`](docs/stage-b-setup.md) (accounts and local run) and [`docs/sidebar-setup.md`](docs/sidebar-setup.md) (Gmail sidebar from Vercel).
 
 ### Tests
 
 ```bash
-npm test                       # 80 tests · shared modules
-cd web && npm test             # 24 tests · crypto, JWT, parsing, extraction, deletion
+npm test                       # 89 tests · shared modules and the Sheet migration parser
+cd web && npm test             # 63 tests · crypto, JWT, add-on token checks, cards, digest, nudge, eval, extraction, deletion
 ```
 
 ---
@@ -198,10 +198,13 @@ cd web && npm test             # 24 tests · crypto, JWT, parsing, extraction, d
 | --- | --- | --- |
 | 0–6 | Add-on: extraction, evaluation gate, Tasks/Calendar, sidebar, morning digest, nudges, metrics, onboarding | ✅ Complete and verified |
 | 7 · Stage 1 | Next.js foundation, Postgres schema + RLS, token encryption, privacy pages | ✅ Done |
-| 7 · Stage 2 | Google sign-in, encrypted token storage, Settings, Delete my data | ✅ Done |
-| 7 · Stage 3 | Gmail intake pipeline, queue, scheduled sweep, Pub/Sub push endpoint | ✅ Built · push needs a deployed URL |
-| 7 · Stage 5 | Dashboard: `/items` (Accept/Edit/Dismiss/Done → Tasks + Calendar), `/metrics` | ✅ Done |
-| 7 · next | Sidebar served from Vercel · digest via Resend · nudge drafts · Sheet → Postgres migration · `/admin/eval` · deploy | 🚧 In progress |
+| 7 · Stage 2 | Google sign-in, encrypted token storage, Settings, **Delete my data** (verified with a second account) | ✅ Done |
+| 7 · Stage 3 | Gmail intake: Pub/Sub push (new mail becomes an item within seconds), queue, 5-minute sweep (Supabase pg_cron) | ✅ Live on Vercel |
+| 7 · Stage 4 | Gmail sidebar served from Vercel (HTTP add-on, Google-signed requests verified) | ✅ Live |
+| 7 · Stage 5 | Dashboard: Items (Accept/Edit/Dismiss/Done → Tasks + Calendar), Metrics, Eval | ✅ Done |
+| 7 · Stage 6 | Morning digest via Resend with signed open/click tracking · one-tap nudge drafts | ✅ Done |
+| 7 · Stage 7 | Sheet → Postgres migration · Eval gate re-run on the web pipeline (**same result as the add-on: P 1.0, R 0.778, date acc 1.0, PASS**) | ✅ Done |
+| Next | Google OAuth verification + CASA security assessment for public launch — see [docs/google-verification.md](docs/google-verification.md) | ⏳ Not started |
 
 ### Known limits
 
@@ -209,6 +212,8 @@ cd web && npm test             # 24 tests · crypto, JWT, parsing, extraction, d
 - Google Tasks notes are plain text, so the email link is not clickable there (it is in Calendar).
 - Metrics such as week-4 on-time rate and D7/D30 retention need time to become measurable.
 - The evaluation set is small and was tuned on itself; treat the numbers as a regression gate, not a benchmark.
+- Free Gemini tier: rate-limited (about 13 calls a minute) and not suitable for other people's mail. Use a paid-tier key before inviting testers.
+- Resend's free plan only delivers to the account owner until a sending domain is verified.
 - Google verification for the restricted Gmail scopes (and a security assessment) is required before public launch.
 
 ---

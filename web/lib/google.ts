@@ -63,10 +63,31 @@ export async function historyAdded(token: string, startHistoryId: string): Promi
   let pageToken: string | undefined;
   do {
     const r = await gmail(token, 'history', { params: { startHistoryId, historyTypes: 'messageAdded', maxResults: 500, pageToken } });
-    for (const h of r.history ?? []) for (const a of h.messagesAdded ?? []) if (a.message?.id) ids.add(a.message.id);
+    for (const id of wantedFromHistory(r.history ?? [])) ids.add(id);
     pageToken = r.nextPageToken;
   } while (pageToken);
   return [...ids];
+}
+
+/**
+ * Same intent as SCAN_QUERY, applied to history entries (which carry labelIds): keep Inbox and Sent mail, drop promotions,
+ * social, spam, trash and drafts, so a push never spends model calls on mail the sweep would ignore.
+ */
+const SKIP_LABELS = ['CATEGORY_PROMOTIONS', 'CATEGORY_SOCIAL', 'SPAM', 'TRASH', 'DRAFT', 'CHAT'];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function wantedFromHistory(history: any[]): string[] {
+  const out: string[] = [];
+  for (const h of history) {
+    for (const a of h.messagesAdded ?? []) {
+      const m = a.message;
+      const labels: string[] = m?.labelIds ?? [];
+      if (!m?.id) continue;
+      if (!(labels.includes('INBOX') || labels.includes('SENT'))) continue;
+      if (labels.some((l) => SKIP_LABELS.includes(l))) continue;
+      out.push(m.id);
+    }
+  }
+  return out;
 }
 
 /** Ask Gmail to push mailbox changes to the Pub/Sub topic. Returns the new history id and expiry. */

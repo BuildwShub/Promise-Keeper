@@ -14,7 +14,8 @@ export const maxDuration = 30;
  */
 export async function POST(req: Request) {
   const token = new URL(req.url).searchParams.get('token');
-  if (!secretMatches(token)) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  // Pub/Sub may rewrite %2B to a bare "+", which URL parsing reads as a space. Accept the token either way.
+  if (!secretMatches(token) && !secretMatches(token?.replace(/ /g, '+'))) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   try {
     // A message we cannot read is acked (204) so Pub/Sub does not redeliver it forever.
     let data: { emailAddress?: string; historyId?: string | number };

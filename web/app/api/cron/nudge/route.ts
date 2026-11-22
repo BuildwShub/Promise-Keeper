@@ -22,7 +22,7 @@ async function run(req: Request) {
     for (const d of list.drafts ?? []) {
       const m = await (await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/drafts/${d.id}?format=metadata&metadataHeaders=To&metadataHeaders=Subject`, { headers: H })).json();
       const h = (n: string) => (m.message?.payload?.headers ?? []).find((x: { name: string }) => x.name === n)?.value;
-      out.push({ id: d.id, thread: m.message?.threadId, to: h('To'), subject: h('Subject'), snippet: String(m.message?.snippet ?? '').slice(0, 120) });
+      out.push({ id: d.id, messageId: m.message?.id, thread: m.message?.threadId, to: h('To'), subject: h('Subject'), snippet: String(m.message?.snippet ?? '').slice(0, 120) });
     }
     return NextResponse.json({ drafts: out });
   }

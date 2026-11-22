@@ -1,0 +1,21 @@
+{
+  "name": "promise-keeper",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Promise Keeper for Gmail: Apps Script add-on (Stage A) + shared pure logic",
+  "scripts": {
+    "test": "jest",
+    "build": "node scripts/copy-shared.js",
+    "push": "npm run build && cd addon && clasp push"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ]
+  },
+  "devDependencies": {
+    "@google/clasp": "^3.4.1",
+    "jest": "^30.5.2"
+  }
+}

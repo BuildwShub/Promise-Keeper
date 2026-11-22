@@ -41,3 +41,26 @@ export async function geminiExtract(ctx: any): Promise<any[]> {
   }
   throw new Error('Gemini failed: ' + lastErr);
 }
+
+/** Free-text generation (nudge drafts). Returns '' on any failure so callers can fall back to a template. */
+export async function geminiText(system: string, user: string): Promise<string> {
+  try {
+    const key = process.env.GEMINI_API_KEY;
+    if (!key) return '';
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.GEMINI_MODEL}:generateContent`;
+    for (let attempt = 0; attempt < CONFIG.GEMINI_MAX_TRIES; attempt++) {
+      await pace();
+      const res = await fetch(url, {
+        method: 'POST', headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
+        body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: 'user', parts: [{ text: user }] }], generationConfig: { temperature: 0.4 } }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return String(data.candidates?.[0]?.content?.parts?.[0]?.text ?? '').trim();
+      }
+      if (res.status !== 429 && res.status < 500) return '';
+      await sleep((res.status === 429 ? 5000 : 1000) * 2 ** attempt);
+    }
+  } catch { /* fall through to the template */ }
+  return '';
+}

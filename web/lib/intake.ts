@@ -4,6 +4,7 @@ import { CONFIG } from './config';
 import { accessTokenFor, getMessage, historyAdded, listIds, startWatch, GoogleError, ReauthError } from './google';
 import { checkResolved, runExtract, storeItems } from './extract';
 import { autoAdd, syncStatus } from './actions';
+import { sendDigest } from './digest';
 
 export interface UserCtx { id: string; email: string; timezone: string }
 
@@ -129,7 +130,10 @@ export async function sweepUser(db: SupabaseClient, user: UserCtx, deadlineMs: n
   // Housekeeping that must not fail the sweep: Tasks completion sync, then auto-add (off unless the user enabled it).
   let sync: unknown = null, auto = 0;
   try { sync = await syncStatus(db, user.id, access); auto = await autoAdd(db, user.id); } catch (e) { sync = { error: String((e as Error).message ?? e).slice(0, 120) }; }
-  await db.from('events').insert({ user_id: user.id, event: 'scan', meta: { ...stats, enqueued, first, sync, auto } });
+  // Morning digest: sent once per local day at or after the user's digest hour. A failure here must not fail the sweep.
+  let digest: unknown = null;
+  try { digest = await sendDigest(db, user); } catch (e) { digest = { error: String((e as Error).message ?? e).slice(0, 120) }; }
+  await db.from('events').insert({ user_id: user.id, event: 'scan', meta: { ...stats, enqueued, first, sync, auto, digest } });
   return { ...stats, enqueued, watch };
 }
 

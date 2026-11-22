@@ -1,6 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { acceptItem, accessFor, dismissItem, editItem, markDone } from '../actions';
 import { processMessage } from '../intake';
+import { createNudgeDraft } from '../nudge';
 import { localDateIn } from '../metrics';
 import { homeCard, editCard, messageCard, replaceCard, showCard, signInCard, threadCard, toastOnly, type CardItem, type Ctx } from './cards';
 import { verifyGoogleJwt } from './verify';
@@ -94,6 +95,10 @@ export async function handleAddon(kind: Kind, body: any, user: AddonUser, db: Su
       case 'done': await markDone(db, user.id, id); return refresh('Marked done');
       case 'dismiss': await dismissItem(db, user.id, id); return refresh('Dismissed');
       case 'cancel': return refresh('Cancelled');
+      case 'nudge': {
+        const r = await createNudgeDraft(db, user.id, id);
+        return refresh(r.usedFallback ? 'Draft created in Gmail (standard wording)' : 'Draft created in Gmail. Review it in Drafts.');
+      }
       case 'edit': {
         const { data } = await db.from('items').select(COLS).eq('id', id).eq('user_id', user.id).maybeSingle();
         if (!data) return toastOnly('Item not found');

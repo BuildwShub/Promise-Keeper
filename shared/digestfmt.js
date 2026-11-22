@@ -3,7 +3,10 @@ var DigestFmt = (function () {
   function datesDep() { return typeof Dates !== 'undefined' ? Dates : require('./dates.js'); }
 
   function esc(s) { return String(s === undefined || s === null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-  function threadLink(id) { return 'https://mail.google.com/mail/u/0/#all/' + id; }
+  // With the account email the link opens the right Gmail account even when it is not signed-in account 0 (the web app passes it).
+  function threadLink(id, accountEmail) {
+    return accountEmail ? 'https://mail.google.com/mail/?authuser=' + encodeURIComponent(accountEmail) + '#all/' + id : 'https://mail.google.com/mail/u/0/#all/' + id;
+  }
   function byDue(a, b) { return String(a.due || '9999').localeCompare(String(b.due || '9999')); }
 
   /**
@@ -37,7 +40,7 @@ var DigestFmt = (function () {
 
     var uidParam = opts.uid ? '&uid=' + encodeURIComponent(opts.uid) : ''; // anonymous tester id for retention
     function link(it) {
-      var l = threadLink(it.threadId);
+      var l = threadLink(it.threadId, opts.accountEmail);
       return opts.trackBase ? opts.trackBase + '?e=click&i=' + encodeURIComponent(it.itemId) + uidParam + '&u=' + encodeURIComponent(l) : l;
     }
     function row(x) {
@@ -48,7 +51,7 @@ var DigestFmt = (function () {
       if (x.late) meta.push('<b style="color:#c5221f">LATE</b>');
       return '<li style="margin:6px 0"><b>' + esc(it.what) + '</b> <span style="color:#5f6368">' + meta.join(' · ') + '</span> <a href="' + esc(link(it)) + '">open thread</a></li>';
     }
-    function textRow(x) { return '- ' + x.it.what + (x.it.due ? ' (due ' + x.it.due + ')' : '') + (x.late ? ' LATE' : '') + ' ' + threadLink(x.it.threadId); }
+    function textRow(x) { return '- ' + x.it.what + (x.it.due ? ' (due ' + x.it.due + ')' : '') + (x.late ? ' LATE' : '') + ' ' + threadLink(x.it.threadId, opts.accountEmail); }
 
     var sections = [['Overdue', overdue], ['Due today', dueToday], ['Due this week', week], ['Waiting on others', waiting]];
     var html = '<div style="font-family:Arial,sans-serif;font-size:14px;color:#202124"><h2 style="margin:0 0 8px">Promise Keeper</h2><div style="color:#5f6368">' + esc(today) + '</div>';

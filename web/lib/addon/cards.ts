@@ -36,6 +36,7 @@ export function itemSection(it: CardItem, ctx: Ctx, today: string): any {
   if (it.status === 'possibly_resolved') buttons.push(button(ctx, 'They delivered', { ...p, op: 'done' }, true));
   if (it.status !== 'dismissed' && it.status !== 'done') {
     buttons.push(button(ctx, 'Edit', { ...p, op: 'edit' }));
+    if (it.type === 'waiting_on') buttons.push(button(ctx, 'Draft follow-up', { ...p, op: 'nudge' }));
     buttons.push(button(ctx, 'Dismiss', { ...p, op: 'dismiss' }));
   }
   const widgets: any[] = [

@@ -104,3 +104,15 @@ export function parseMessage(m: any): Msg | null {
     from: h.from ?? '', to: h.to ?? '', cc: h.cc ?? '', subject: h.subject ?? '', body,
   };
 }
+
+// ---------- threads and drafts (nudges) ----------
+/** Thread with only the headers a reply needs. */
+export async function getThreadMeta(token: string, threadId: string) {
+  const q = ['Message-ID', 'References', 'Subject', 'From', 'To'].map((h) => `metadataHeaders=${encodeURIComponent(h)}`).join('&');
+  return gmail(token, `threads/${threadId}?format=metadata&${q}`);
+}
+
+/** Create a Gmail DRAFT (never sends). raw is base64url MIME. */
+export async function createDraft(token: string, raw: string, threadId: string): Promise<{ id: string }> {
+  return gmail(token, 'drafts', { method: 'POST', body: { message: { raw, threadId } } });
+}

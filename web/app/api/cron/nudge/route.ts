@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { adminClient } from '@/lib/supabase';
 import { bearer, secretMatches } from '@/lib/guard';
 import { createNudgeDraft } from '@/lib/nudge';
+import { accessFor } from '@/lib/actions';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
@@ -10,6 +11,21 @@ export const maxDuration = 30;
 async function run(req: Request) {
   if (!secretMatches(bearer(req))) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   const db = adminClient();
+  if (new URL(req.url).searchParams.get('list') === '1') {
+    // List the newest drafts (recipient, subject, thread and a text snippet) to confirm what was created.
+    const uid = (await db.from('users').select('id').limit(1).maybeSingle()).data?.id;
+    if (!uid) return NextResponse.json({ error: 'no user' }, { status: 404 });
+    const token = await accessFor(db, uid);
+    const H = { Authorization: `Bearer ${token}` };
+    const list = await (await fetch('https://gmail.googleapis.com/gmail/v1/users/me/drafts?maxResults=5', { headers: H })).json();
+    const out = [];
+    for (const d of list.drafts ?? []) {
+      const m = await (await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/drafts/${d.id}?format=metadata&metadataHeaders=To&metadataHeaders=Subject`, { headers: H })).json();
+      const h = (n: string) => (m.message?.payload?.headers ?? []).find((x: { name: string }) => x.name === n)?.value;
+      out.push({ id: d.id, thread: m.message?.threadId, to: h('To'), subject: h('Subject'), snippet: String(m.message?.snippet ?? '').slice(0, 120) });
+    }
+    return NextResponse.json({ drafts: out });
+  }
   let itemId = new URL(req.url).searchParams.get('item');
   let userId: string | undefined;
   if (itemId) {

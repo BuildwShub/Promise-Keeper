@@ -8,6 +8,7 @@ import { Dates, OutputsFmt } from '@/lib/shared';
 
 export const metadata = { title: 'Items · Promise Keeper' };
 export const dynamic = 'force-dynamic';
+export const maxDuration = 30; // item actions call Google APIs
 
 const TYPE_LABEL: Record<string, string> = { my_promise: 'I promised', request_to_me: 'Asked of me', deadline: 'Deadline', waiting_on: 'Waiting on them' };
 const TYPES = Object.keys(TYPE_LABEL);

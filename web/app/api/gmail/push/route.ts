@@ -14,8 +14,18 @@ export const maxDuration = 30;
  */
 export async function POST(req: Request) {
   const token = new URL(req.url).searchParams.get('token');
-  // Pub/Sub may rewrite %2B to a bare "+", which URL parsing reads as a space. Accept the token either way.
-  if (!secretMatches(token) && !secretMatches(token?.replace(/ /g, '+'))) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  // Pub/Sub may rewrite %2B to a bare "+" (read as a space) or encode the token a second time. Accept those forms too.
+  const candidates = new Set<string>();
+  if (token) {
+    candidates.add(token);
+    candidates.add(token.replace(/ /g, '+'));
+    try { const d = decodeURIComponent(token); candidates.add(d); candidates.add(d.replace(/ /g, '+')); } catch { /* not double-encoded */ }
+  }
+  if (![...candidates].some((c) => secretMatches(c))) {
+    // Shape only, never the value: helps diagnose how the subscription encodes the token.
+    console.warn('push token rejected', { length: token?.length ?? 0, hasPercent: !!token?.includes('%'), hasSpace: !!token?.includes(' '), hasPlus: !!token?.includes('+') });
+    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  }
   try {
     // A message we cannot read is acked (204) so Pub/Sub does not redeliver it forever.
     let data: { emailAddress?: string; historyId?: string | number };

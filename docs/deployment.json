@@ -7,7 +7,7 @@
   "addOns": {
     "common": {
       "name": "Promise Keeper",
-      "logoUrl": "https://www.gstatic.com/images/icons/material/system/2x/check_circle_black_24dp.png",
+      "logoUrl": "https://promise-keeper-omega.vercel.app/logo.png",
       "homepageTrigger": {
         "runFunction": "https://promise-keeper-omega.vercel.app/api/addon/homepage"
       }

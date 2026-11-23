@@ -1,9 +1,17 @@
 <div align="center">
 
-# 🤝 Promise Keeper for Gmail
+<img src="docs/images/logo.png" alt="Promise Keeper logo" width="110">
+
+# Promise Keeper for Gmail
 
 **Most email tools read your inbox. Promise Keeper also reads your Sent folder.**<br>
 It finds what *you* promised, what others asked of *you*, hard deadlines, and what people owe *you* — then helps you keep every one.
+
+<br>
+
+<img src="docs/images/demo.gif" alt="Walkthrough: the problem, an email with the extracted promise, the morning digest, the dashboard and the evaluation numbers" width="760">
+
+<sub>Walkthrough built from real screenshots. Want to see it live? <a href="docs/demo-script.md">Recording script</a>.</sub>
 
 <br>
 

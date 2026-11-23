@@ -13,7 +13,7 @@ const Schema = require('../shared/schema.js'), Validate = require('../shared/val
 const env = Object.fromEntries(fs.readFileSync(path.join(root, 'web', '.env.local'), 'utf8').split(/\r?\n/).filter((l) => /^[A-Z_]+=/.test(l)).map((l) => [l.split('=')[0], l.slice(l.indexOf('=') + 1)]));
 const KEY = env.GEMINI_API_KEY, MODEL = env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 const SPACING = Number(process.env.GEMINI_SPACING_MS ?? 4500);
-const PROMPT_VERSION = 'v2';
+const PROMPT_VERSION = 'v3';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function extract(ctx) {

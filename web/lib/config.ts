@@ -1,6 +1,6 @@
 /** Same values as addon/src/Config.js, so Stage A and Stage B extract identically. */
 export const CONFIG = {
-  PROMPT_VERSION: 'v2',
+  PROMPT_VERSION: 'v3',
   GEMINI_MODEL: process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
   GEMINI_MAX_TRIES: 4,
   MAX_CLEAN_CHARS: 3000,

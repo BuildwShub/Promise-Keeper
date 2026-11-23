@@ -1,25 +1,25 @@
 {
  "note": "Synthetic, developer-written emails with expected answers derived from the prompt date rules. Easier than real mail: see README.",
- "promptVersion": "v2",
+ "promptVersion": "v3",
  "model": "gemini-3.5-flash-lite",
  "emails": 76,
  "emailsWithItems": 49,
  "expectedItems": 53,
  "shown": {
-  "tp": 48,
-  "fp": 4,
-  "precision": 0.9230769230769231,
-  "recall": 0.9056603773584906
+  "tp": 49,
+  "fp": 3,
+  "precision": 0.9423076923076923,
+  "recall": 0.9245283018867925
  },
  "overall": {
-  "tp": 48,
-  "fp": 4,
-  "fn": 5,
-  "precision": 0.9230769230769231,
-  "recall": 0.9056603773584906
+  "tp": 49,
+  "fp": 3,
+  "fn": 4,
+  "precision": 0.9423076923076923,
+  "recall": 0.9245283018867925
  },
  "dateAccuracy": 1,
- "dateN": 42,
+ "dateN": 43,
  "needsDateAccuracy": 1,
  "gate": true,
  "perType": {
@@ -38,11 +38,11 @@
    "recall": 1
   },
   "deadline": {
-   "tp": 6,
-   "fp": 1,
-   "fn": 1,
-   "precision": 0.8571428571428571,
-   "recall": 0.8571428571428571
+   "tp": 7,
+   "fp": 0,
+   "fn": 0,
+   "precision": 1,
+   "recall": 1
   },
   "waiting_on": {
    "tp": 11,
@@ -84,8 +84,8 @@
    "name": "Sent mail (my promises, asks)",
    "emails": 34,
    "expectedItems": 25,
-   "precision": 0.9166666666666666,
-   "recall": 0.88,
+   "precision": 0.92,
+   "recall": 0.92,
    "dateAccuracy": 1,
    "falseAlarms": 2
   },
@@ -93,10 +93,10 @@
    "name": "Inbox mail",
    "emails": 42,
    "expectedItems": 28,
-   "precision": 0.9285714285714286,
+   "precision": 0.9629629629629629,
    "recall": 0.9285714285714286,
    "dateAccuracy": 1,
-   "falseAlarms": 2
+   "falseAlarms": 1
   },
   {
    "name": "Promo and campaign traps",
@@ -120,16 +120,6 @@
    ]
   },
   {
-   "id": "syn-028",
-   "items": [
-    {
-     "type": "deadline",
-     "what": "Register for the exam",
-     "due": "2026-11-25"
-    }
-   ]
-  },
-  {
    "id": "syn-033",
    "items": [
     {
@@ -144,7 +134,7 @@
    "items": [
     {
      "type": "my_promise",
-     "what": "Provide the update",
+     "what": "Give an update",
      "due": "2026-11-17"
     }
    ]
@@ -162,12 +152,12 @@
    ]
   },
   {
-   "id": "syn-028",
+   "id": "syn-031",
    "items": [
     {
-     "type": "deadline",
-     "what": "Complete exam registration",
-     "due": "2026-11-25"
+     "type": "waiting_on",
+     "what": "Ship order",
+     "due": "2026-11-27"
     }
    ]
   },
@@ -178,16 +168,6 @@
      "type": "waiting_on",
      "what": "Send quote",
      "due": ""
-    }
-   ]
-  },
-  {
-   "id": "syn-038",
-   "items": [
-    {
-     "type": "waiting_on",
-     "what": "Confirm booking",
-     "due": "2026-11-21"
     }
    ]
   },

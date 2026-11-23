@@ -1,5 +1,5 @@
 var CONFIG = {
-  PROMPT_VERSION: 'v2',
+  PROMPT_VERSION: 'v3',
   GEMINI_MODEL: 'gemini-3.5-flash-lite', // id guessed from the model name; confirm in AI Studio
   SHOW_CONFIDENCE: 0.6,             // below this = "Suggestion" only
   MAX_MESSAGES_PER_RUN: 40,

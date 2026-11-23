@@ -27,6 +27,7 @@ export default function ScanProgress({ queued, processed }: { queued: number; pr
           stuck = j.newItems === 0 && j.errors > 0 ? stuck + 1 : 0;
           if (stuck >= 3) throw new Error('no progress');
         } catch {
+          try { const g = await (await fetch('/api/scan')).json(); if (typeof g.queued === 'number') setState(g); } catch { /* keep the old numbers */ }
           setStatus('paused'); // the 5-minute background scan keeps going
           return;
         }

@@ -19,7 +19,7 @@ export async function GET() {
   return NextResponse.json(await scanState(adminClient(), id));
 }
 
-/** Read for up to about 45 seconds, then report progress. The page calls this again until nothing is queued. */
+/** Read for about 30 seconds, then report progress. The page calls this again until nothing is queued. */
 export async function POST() {
   const id = await uid();
   if (!id) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });

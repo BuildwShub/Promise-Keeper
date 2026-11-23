@@ -18,7 +18,7 @@ export function apiId(eventId: unknown): string {
   return m ? BigInt(m[1]).toString(16) : String(eventId ?? '');
 }
 
-const COLS = 'id,type,what,due,due_text,needs_date,confidence,evidence,status,counterparty_name';
+const COLS = 'id,type,what,due,due_text,needs_date,confidence,evidence,status,counterparty_name,task_id,event_id';
 const OPEN = ['suggested', 'accepted', 'possibly_resolved'];
 
 export type AuthResult = { ok: true; user: AddonUser } | { ok: false; reason: 'unauthorized' | 'no_account' };
@@ -91,7 +91,7 @@ export async function handleAddon(kind: Kind, body: any, user: AddonUser, db: Su
 
   try {
     switch (p.op) {
-      case 'accept': await acceptItem(db, user.id, id); return refresh('Added to Google Tasks');
+      case 'accept': { const r = await acceptItem(db, user.id, id); return refresh('Added to Google Tasks' + (r.event_id ? ' and Calendar' : '')); }
       case 'done': await markDone(db, user.id, id); return refresh('Marked done');
       case 'dismiss': await dismissItem(db, user.id, id); return refresh('Dismissed');
       case 'cancel': return refresh('Cancelled');

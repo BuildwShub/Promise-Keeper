@@ -43,24 +43,35 @@ var DigestFmt = (function () {
       var l = threadLink(it.threadId, opts.accountEmail);
       return opts.trackBase ? opts.trackBase + '?e=click&i=' + encodeURIComponent(it.itemId) + uidParam + '&u=' + encodeURIComponent(l) : l;
     }
-    function row(x) {
-      var it = x.it;
+    var COLORS = { Overdue: '#d93025', 'Due today': '#e37400', 'Due this week': '#1a73e8', 'Waiting on others': '#188038' };
+    function row(x, name) {
+      var it = x.it, c = COLORS[name];
       var meta = [];
       if (it.counterpartyName) meta.push(esc(it.counterpartyName));
       meta.push(it.due ? 'due ' + esc(it.due) : 'no date');
-      if (x.late) meta.push('<b style="color:#c5221f">LATE</b>');
-      return '<li style="margin:6px 0"><b>' + esc(it.what) + '</b> <span style="color:#5f6368">' + meta.join(' · ') + '</span> <a href="' + esc(link(it)) + '">open thread</a></li>';
+      return '<tr><td style="padding:0 0 10px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #dadce0;border-radius:12px;border-left:5px solid ' + c + '"><tr>' +
+        '<td style="padding:12px 14px"><div style="font-size:15px;font-weight:600;color:#202124">' + esc(it.what) + (x.late ? ' <span style="background:#fce8e6;color:#c5221f;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px">LATE</span>' : '') + '</div>' +
+        '<div style="font-size:13px;color:#5f6368;margin-top:2px">' + meta.join(' · ') + '</div></td>' +
+        '<td align="right" style="padding:12px 14px;white-space:nowrap"><a href="' + esc(link(it)) + '" style="background:#e8f0fe;color:#1a73e8;text-decoration:none;font-size:13px;font-weight:600;padding:8px 14px;border-radius:16px">Open thread</a></td></tr></table></td></tr>';
     }
     function textRow(x) { return '- ' + x.it.what + (x.it.due ? ' (due ' + x.it.due + ')' : '') + (x.late ? ' LATE' : '') + ' ' + threadLink(x.it.threadId, opts.accountEmail); }
 
     var sections = [['Overdue', overdue], ['Due today', dueToday], ['Due this week', week], ['Waiting on others', waiting]];
-    var html = '<div style="font-family:Arial,sans-serif;font-size:14px;color:#202124"><h2 style="margin:0 0 8px">Promise Keeper</h2><div style="color:#5f6368">' + esc(today) + '</div>';
+    var tiles = [['Overdue', counts.overdue], ['Due today', counts.today], ['Due this week', counts.week], ['Waiting on others', counts.waiting]];
+    var html = '<div style="background:#f1f3f4;padding:24px 12px;font-family:Roboto,Arial,sans-serif"><table role="presentation" align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto"><tr><td style="background:#ffffff;border-radius:16px;padding:24px">' +
+      '<div style="font-size:13px;font-weight:700;color:#1a73e8;letter-spacing:.5px">PROMISE KEEPER</div>' +
+      '<div style="font-size:26px;font-weight:700;color:#202124;margin:6px 0 2px">Good morning</div>' +
+      '<div style="font-size:14px;color:#5f6368;margin-bottom:18px">Here is what needs you today &middot; ' + esc(today) + '</div>' +
+      '<table role="presentation" width="100%" cellpadding="0" cellspacing="6" style="margin:0 -6px 14px"><tr>' +
+      tiles.map(function (t) { return '<td align="center" style="background:#f8f9fa;border-radius:12px;padding:12px 4px"><div style="font-size:26px;font-weight:700;color:' + COLORS[t[0]] + '">' + t[1] + '</div><div style="font-size:11px;color:#5f6368">' + t[0] + '</div></td>'; }).join('') +
+      '</tr></table>';
     var text = 'Promise Keeper ' + today + '\n';
     sections.forEach(function (s) {
       if (!s[1].length) return;
-      html += '<h3 style="margin:16px 0 4px">' + s[0] + ' (' + s[1].length + ')</h3><ul style="padding-left:18px;margin:0">' + s[1].map(row).join('') + '</ul>';
+      html += '<div style="font-size:15px;font-weight:700;color:' + COLORS[s[0]] + ';margin:18px 0 8px">' + s[0] + ' (' + s[1].length + ')</div><table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + s[1].map(function (x) { return row(x, s[0]); }).join('') + '</table>';
       text += '\n' + s[0] + ' (' + s[1].length + ')\n' + s[1].map(textRow).join('\n') + '\n';
     });
+    html += '<div style="font-size:12px;color:#80868b;margin-top:20px;border-top:1px solid #e8eaed;padding-top:12px">Promise Keeper never sends email for you. Items come from your own Gmail and need your Accept first.</div></td></tr></table>';
     if (opts.trackBase) html += '<img src="' + esc(opts.trackBase + '?e=open&d=' + today + uidParam) + '" width="1" height="1" alt="">';
     html += '</div>';
 

@@ -19,3 +19,40 @@ a { color: var(--accent); }
 nav { display: flex; gap: 16px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
 ul { padding-left: 20px; }
 .btn { display: inline-block; padding: 10px 18px; border-radius: 20px; background: var(--accent); color: #fff; text-decoration: none; }
+
+/* ---- Promise Keeper UI ---- */
+:root { --card: #ffffff; --soft: #f1f3f4; --green: #188038; --red: #d93025; --orange: #e37400; --purple: #7b3fc4; --shadow: 0 1px 3px rgba(60,64,67,.18), 0 2px 8px rgba(60,64,67,.08); }
+@media (prefers-color-scheme: dark) { :root { --card: #202124; --soft: #2a2b2e; --shadow: 0 1px 3px rgba(0,0,0,.5); } }
+body { background: var(--soft); }
+nav { background: var(--card); box-shadow: var(--shadow); border-bottom: 0; flex-wrap: wrap; align-items: center; position: sticky; top: 0; z-index: 5; }
+nav a { text-decoration: none; color: var(--muted); font-size: .92rem; font-weight: 500; padding: 4px 2px; }
+nav a:first-child { color: var(--accent); font-weight: 700; font-size: 1.02rem; margin-right: 8px; }
+nav a:hover { color: var(--fg); }
+main { max-width: 820px; }
+h1 { font-weight: 700; letter-spacing: -.01em; }
+.tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 18px 0; }
+.tile { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); padding: 14px 8px; text-align: center; }
+.tile b { display: block; font-size: 1.9rem; line-height: 1.1; }
+.tile span { font-size: .78rem; color: var(--muted); }
+.tabs { display: flex; gap: 8px; margin: 6px 0 14px; }
+.tab { padding: 7px 16px; border-radius: 18px; background: var(--card); color: var(--muted); text-decoration: none; font-size: .9rem; box-shadow: var(--shadow); }
+.tab.on { background: var(--accent); color: #fff; }
+.item { background: var(--card); border-radius: 16px; box-shadow: var(--shadow); padding: 16px 18px; margin: 12px 0; border-left: 6px solid var(--c, var(--accent)); }
+.chips { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.chip { display: inline-block; padding: 3px 12px; border-radius: 14px; font-size: .78rem; font-weight: 700; background: color-mix(in srgb, var(--c, var(--accent)) 14%, transparent); color: var(--c, var(--accent)); }
+.chip.status { background: var(--soft); color: var(--muted); font-weight: 600; }
+.chip.ok { background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green); }
+.what { font-size: 1.15rem; font-weight: 700; margin: 8px 0 2px; }
+.due { color: var(--muted); font-size: .92rem; }
+.due.late { color: var(--red); font-weight: 700; }
+.quote { margin: 8px 0; padding: 6px 12px; border-left: 3px solid var(--border); color: var(--muted); font-style: italic; font-size: .9rem; }
+.synced { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0 2px; }
+.sync { display: flex; align-items: center; gap: 8px; background: var(--soft); border-radius: 12px; padding: 6px 12px; font-size: .85rem; }
+.sync i { font-style: normal; width: 22px; height: 22px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; background: var(--accent); }
+.sync.cal i { background: #fff; color: var(--red); border: 2px solid var(--red); font-size: .7rem; }
+.actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+button { font: inherit; font-size: .88rem; font-weight: 600; padding: 7px 16px; border-radius: 18px; border: 1.5px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; }
+button:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+button.primary { background: var(--accent); color: #fff; }
+.notice { background: color-mix(in srgb, var(--green) 12%, var(--card)); border-radius: 12px; padding: 10px 14px; }
+@media (max-width: 600px) { .tiles { grid-template-columns: repeat(2, 1fr); } }

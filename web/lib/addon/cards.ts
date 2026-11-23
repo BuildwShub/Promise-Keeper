@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Pure builders for Workspace add-on card JSON (HTTP endpoints). No I/O, so they are easy to test. */
 
+export const TYPE_COLOR: Record<string, string> = { my_promise: '#7b3fc4', request_to_me: '#e37400', deadline: '#d93025', waiting_on: '#1a73e8' };
 export const TYPE_LABEL: Record<string, string> = { my_promise: 'I promised', request_to_me: 'Asked of me', deadline: 'Deadline', waiting_on: 'Waiting on them' };
 
 export interface CardItem {
   id: string; type: string; what: string; due: string | null; due_text: string; needs_date: boolean; confidence: number;
-  evidence: string; status: string; counterparty_name: string;
+  evidence: string; status: string; counterparty_name: string; task_id?: string | null; event_id?: string | null;
 }
 export interface Ctx { base: string; threadId?: string; msgId?: string }
 
@@ -39,10 +40,19 @@ export function itemSection(it: CardItem, ctx: Ctx, today: string): any {
     if (it.type === 'waiting_on') buttons.push(button(ctx, 'Draft follow-up', { ...p, op: 'nudge' }));
     buttons.push(button(ctx, 'Dismiss', { ...p, op: 'dismiss' }));
   }
+  const color = TYPE_COLOR[it.type] ?? '#5f6368';
+  const late = !!it.due && it.status !== 'done' && it.due < today;
   const widgets: any[] = [
-    { decoratedText: { topLabel: `${TYPE_LABEL[it.type] ?? it.type} · ${it.status.replace('_', ' ')}${it.confidence < 0.6 ? ' · suggestion' : ''}`, text: `<b>${esc(it.what)}</b>${it.counterparty_name ? ` (${esc(it.counterparty_name)})` : ''}`, bottomLabel: dueLine(it, today), wrapText: true } },
+    { textParagraph: { text: `<font color="${color}"><b>${esc(TYPE_LABEL[it.type] ?? it.type)}</b></font> · ${it.status === 'accepted' ? '<font color="#188038"><b>Accepted</b></font>' : it.status === 'suggested' ? 'Suggested' : esc(it.status.replace('_', ' '))}${it.confidence < 0.6 ? ' · suggestion' : ''}` } },
+    { decoratedText: { startIcon: { knownIcon: it.type === 'waiting_on' ? 'PERSON' : it.type === 'deadline' ? 'CLOCK' : 'BOOKMARK' }, text: `<b>${esc(it.what)}</b>${it.counterparty_name ? ` (${esc(it.counterparty_name)})` : ''}`, bottomLabel: dueLine(it, today), wrapText: true } },
     { textParagraph: { text: `<i>"${esc(it.evidence)}"</i>` } },
   ];
+  if (late) widgets.push({ textParagraph: { text: '<font color="#d93025"><b>Overdue</b></font>' } });
+  if (it.status === 'accepted') {
+    widgets.push({ divider: {} });
+    widgets.push({ decoratedText: { startIcon: { knownIcon: 'CONFIRMATION_NUMBER_ICON' }, topLabel: 'Google Tasks', text: it.task_id ? '<font color="#188038"><b>Task created</b></font>' : 'Task pending', wrapText: true } });
+    if (it.due) widgets.push({ decoratedText: { startIcon: { knownIcon: 'INVITE' }, topLabel: 'Google Calendar', text: it.event_id ? `<font color="#188038"><b>Event on ${esc(it.due)}</b></font>` : 'No calendar event for this item', wrapText: true } });
+  }
   if (buttons.length) widgets.push({ buttonList: { buttons } });
   return { widgets };
 }
@@ -53,7 +63,7 @@ export function threadCard(items: CardItem[], ctx: Ctx, today: string): any {
     if (ctx.msgId) widgets.push({ buttonList: { buttons: [button(ctx, 'Scan this email', { op: 'scan', threadId: ctx.threadId, msgId: ctx.msgId }, true)] } });
     return card('Promise Keeper', [{ widgets }], 'This conversation');
   }
-  return card('Promise Keeper', items.map((it) => itemSection(it, ctx, today)), `${items.length} item${items.length === 1 ? '' : 's'} in this conversation`);
+  return card('Promise Keeper', items.map((it) => itemSection(it, ctx, today)), `${items.length} item${items.length === 1 ? '' : 's'} found in this conversation`);
 }
 
 export function homeCard(stats: { open: number; overdue: number; waiting: number; suggested: number }, top: CardItem[], ctx: Ctx, today: string): any {

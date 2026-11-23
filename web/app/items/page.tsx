@@ -38,7 +38,7 @@ async function editAction(form: FormData) {
 
 interface Item {
   id: string; type: string; what: string; due: string | null; due_text: string; needs_date: boolean; confidence: number;
-  evidence: string; status: string; counterparty_name: string; thread_id: string; direction: string;
+  evidence: string; status: string; counterparty_name: string; thread_id: string; direction: string; event_id?: string | null;
 }
 
 function todayIso() { return new Date().toISOString().slice(0, 10); }
@@ -50,7 +50,7 @@ export default async function Items({ searchParams }: { searchParams: Promise<{ 
 
   const { data, error } = await userClient(uid)
     .from('items')
-    .select('id,type,what,due,due_text,needs_date,confidence,evidence,status,counterparty_name,thread_id,direction')
+    .select('id,type,what,due,due_text,needs_date,confidence,evidence,status,counterparty_name,thread_id,direction,event_id')
     .order('due', { ascending: true, nullsFirst: false })
     .order('created_at', { ascending: false });
   if (error) return <main><h1>Items</h1><p>Could not load items: {error.message}</p></main>;
@@ -63,32 +63,48 @@ export default async function Items({ searchParams }: { searchParams: Promise<{ 
   const today = todayIso();
   const count = (t: string) => all.filter((i) => STATUSES[t].includes(i.status)).length;
 
+  const COLOR: Record<string, string> = { my_promise: '#7b3fc4', request_to_me: '#e37400', deadline: '#d93025', waiting_on: '#1a73e8' };
+  const open = all.filter((i) => STATUSES.open.includes(i.status));
+  const nOver = open.filter((i) => i.due && Dates.bucket(i.due, today) === 'overdue').length;
+  const nToday = open.filter((i) => i.due && Dates.bucket(i.due, today) === 'today').length;
+  const nWait = open.filter((i) => i.type === 'waiting_on').length;
+  const nReview = open.filter((i) => i.status === 'suggested').length;
+  const T = (n: number, l: string, c: string) => <div className="tile"><b style={{ color: c }}>{n}</b><span>{l}</span></div>;
+
   return (
     <main>
-      <h1>Items</h1>
+      <h1>Your promises</h1>
       <p className="muted">What you promised, what was asked of you, deadlines, and what others owe you.</p>
-      <p>
+      <div className="tiles">{T(nOver, 'Overdue', '#d93025')}{T(nToday, 'Due today', '#e37400')}{T(nReview, 'To review', '#1a73e8')}{T(nWait, 'Waiting on others', '#188038')}</div>
+      <div className="tabs">
         {Object.keys(STATUSES).map((t) => (
-          <a key={t} href={`/items?tab=${t}`} style={{ marginRight: 16, fontWeight: t === tab ? 700 : 400 }}>{t[0].toUpperCase() + t.slice(1)} ({count(t)})</a>
+          <a key={t} href={`/items?tab=${t}`} className={`tab${t === tab ? ' on' : ''}`}>{t[0].toUpperCase() + t.slice(1)} ({count(t)})</a>
         ))}
-      </p>
+      </div>
 
-      {notice && <p style={{ padding: 8, border: '1px solid var(--border)', borderRadius: 6 }}>{notice}</p>}
+      {notice && <p className="notice">{notice}</p>}
       {items.length === 0 && <p className="muted">Nothing here.</p>}
       {items.map((it) => {
         const overdue = it.due && it.status !== 'done' && Dates.bucket(it.due, today) === 'overdue';
         return (
-          <section key={it.id} style={{ border: '1px solid var(--border)', borderRadius: 8, padding: 12, margin: '12px 0' }}>
-            <div><b>{TYPE_LABEL[it.type] ?? it.type}</b> · {it.status.replace('_', ' ')}{it.confidence < 0.6 ? ' · suggestion' : ''}</div>
-            <div style={{ fontSize: '1.05rem', margin: '4px 0' }}>{it.what}{it.counterparty_name ? ` (${it.counterparty_name})` : ''}</div>
-            <div className="muted">
-              {it.due ? <span style={overdue ? { color: '#d93025', fontWeight: 600 } : undefined}>Due {it.due}{overdue ? ' (overdue)' : ''}</span> : it.needs_date ? 'Needs a date' : 'No date'}
+          <section key={it.id} className="item" style={{ ['--c' as string]: COLOR[it.type] ?? '#1a73e8' }}>
+            <div className="chips">
+              <span className="chip">{TYPE_LABEL[it.type] ?? it.type}</span>
+              <span className={`chip status${it.status === 'accepted' ? ' ok' : ''}`}>{it.status === 'accepted' ? 'Accepted' : it.status.replace('_', ' ')}{it.confidence < 0.6 ? ' · suggestion' : ''}</span>
+            </div>
+            <div className="what">{it.what}{it.counterparty_name ? ` (${it.counterparty_name})` : ''}</div>
+            <div className={`due${overdue ? ' late' : ''}`}>
+              {it.due ? `Due ${it.due}${overdue ? ' (overdue)' : ''}` : it.needs_date ? 'Needs a date' : 'No date'}
               {it.due_text ? ` · “${it.due_text}”` : ''}
             </div>
-            <div className="muted" style={{ fontStyle: 'italic' }}>“{it.evidence}”</div>
-            <div style={{ marginTop: 6 }}>
-              <a href={link(it.thread_id)} target="_blank" rel="noreferrer">Open in Gmail</a>
-            </div>
+            <div className="quote">“{it.evidence}”</div>
+            {it.status === 'accepted' && (
+              <div className="synced">
+                <span className="sync"><i>✓</i>Added to Google Tasks</span>
+                {it.event_id && it.due && <span className="sync cal"><i>{it.due.slice(8, 10)}</i>On your Google Calendar</span>}
+              </div>
+            )}
+            <div className="due"><a href={link(it.thread_id)} target="_blank" rel="noreferrer">Open in Gmail</a></div>
 
             {edit === it.id ? (
               <form action={editAction} style={{ marginTop: 8 }}>
@@ -100,9 +116,9 @@ export default async function Items({ searchParams }: { searchParams: Promise<{ 
                 <button type="submit">Save</button> <a href={`/items?tab=${tab}`}>Cancel</a>
               </form>
             ) : (
-              <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
-                {(it.status === 'suggested') && <form action={acceptAction}><input type="hidden" name="id" value={it.id} /><button type="submit">Accept</button></form>}
-                {(it.status === 'accepted' || it.status === 'possibly_resolved') && <form action={doneAction}><input type="hidden" name="id" value={it.id} /><button type="submit">{it.status === 'possibly_resolved' ? 'They delivered: mark done' : 'Mark done'}</button></form>}
+              <div className="actions">
+                {(it.status === 'suggested') && <form action={acceptAction}><input type="hidden" name="id" value={it.id} /><button type="submit" className="primary">Accept</button></form>}
+                {(it.status === 'accepted' || it.status === 'possibly_resolved') && <form action={doneAction}><input type="hidden" name="id" value={it.id} /><button type="submit" className="primary">{it.status === 'possibly_resolved' ? 'They delivered: mark done' : 'Mark done'}</button></form>}
                 {it.status !== 'dismissed' && it.status !== 'done' && <a href={`/items?tab=${tab}&edit=${it.id}`}><button type="button">Edit</button></a>}
                 {it.type === 'waiting_on' && it.status !== 'dismissed' && it.status !== 'done' && <form method="post" action="/api/nudge"><input type="hidden" name="id" value={it.id} /><input type="hidden" name="tab" value={tab} /><button type="submit">Draft follow-up</button></form>}
                 {it.status !== 'dismissed' && it.status !== 'done' && <form action={dismissAction}><input type="hidden" name="id" value={it.id} /><button type="submit">Dismiss</button></form>}

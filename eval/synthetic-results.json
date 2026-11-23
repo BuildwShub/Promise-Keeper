@@ -1,0 +1,206 @@
+{
+ "note": "Synthetic, developer-written emails with expected answers derived from the prompt date rules. Easier than real mail: see README.",
+ "promptVersion": "v2",
+ "model": "gemini-3.5-flash-lite",
+ "emails": 76,
+ "emailsWithItems": 49,
+ "expectedItems": 53,
+ "shown": {
+  "tp": 48,
+  "fp": 4,
+  "precision": 0.9230769230769231,
+  "recall": 0.9056603773584906
+ },
+ "overall": {
+  "tp": 48,
+  "fp": 4,
+  "fn": 5,
+  "precision": 0.9230769230769231,
+  "recall": 0.9056603773584906
+ },
+ "dateAccuracy": 1,
+ "dateN": 42,
+ "needsDateAccuracy": 1,
+ "gate": true,
+ "perType": {
+  "my_promise": {
+   "tp": 17,
+   "fp": 2,
+   "fn": 2,
+   "precision": 0.8947368421052632,
+   "recall": 0.8947368421052632
+  },
+  "request_to_me": {
+   "tp": 14,
+   "fp": 0,
+   "fn": 0,
+   "precision": 1,
+   "recall": 1
+  },
+  "deadline": {
+   "tp": 6,
+   "fp": 1,
+   "fn": 1,
+   "precision": 0.8571428571428571,
+   "recall": 0.8571428571428571
+  },
+  "waiting_on": {
+   "tp": 11,
+   "fp": 1,
+   "fn": 2,
+   "precision": 0.9166666666666666,
+   "recall": 0.8461538461538461
+  }
+ },
+ "groups": [
+  {
+   "name": "Hinglish",
+   "emails": 9,
+   "expectedItems": 7,
+   "precision": 0.8571428571428571,
+   "recall": 0.8571428571428571,
+   "dateAccuracy": 1,
+   "falseAlarms": 1
+  },
+  {
+   "name": "Several items in one email",
+   "emails": 4,
+   "expectedItems": 8,
+   "precision": 1,
+   "recall": 1,
+   "dateAccuracy": 1,
+   "falseAlarms": 0
+  },
+  {
+   "name": "Vague or missing dates",
+   "emails": 4,
+   "expectedItems": 4,
+   "precision": 0.75,
+   "recall": 0.75,
+   "dateAccuracy": null,
+   "falseAlarms": 1
+  },
+  {
+   "name": "Sent mail (my promises, asks)",
+   "emails": 34,
+   "expectedItems": 25,
+   "precision": 0.9166666666666666,
+   "recall": 0.88,
+   "dateAccuracy": 1,
+   "falseAlarms": 2
+  },
+  {
+   "name": "Inbox mail",
+   "emails": 42,
+   "expectedItems": 28,
+   "precision": 0.9285714285714286,
+   "recall": 0.9285714285714286,
+   "dateAccuracy": 1,
+   "falseAlarms": 2
+  },
+  {
+   "name": "Promo and campaign traps",
+   "emails": 5,
+   "expectedItems": 0,
+   "precision": null,
+   "recall": null,
+   "dateAccuracy": null,
+   "falseAlarms": 0
+  }
+ ],
+ "falseAlarms": [
+  {
+   "id": "syn-003",
+   "items": [
+    {
+     "type": "my_promise",
+     "what": "Have the audit summary ready",
+     "due": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "syn-028",
+   "items": [
+    {
+     "type": "deadline",
+     "what": "Register for the exam",
+     "due": "2026-11-25"
+    }
+   ]
+  },
+  {
+   "id": "syn-033",
+   "items": [
+    {
+     "type": "waiting_on",
+     "what": "Get back with the quote",
+     "due": null
+    }
+   ]
+  },
+  {
+   "id": "syn-040",
+   "items": [
+    {
+     "type": "my_promise",
+     "what": "Provide the update",
+     "due": "2026-11-17"
+    }
+   ]
+  }
+ ],
+ "misses": [
+  {
+   "id": "syn-003",
+   "items": [
+    {
+     "type": "my_promise",
+     "what": "Prepare audit summary",
+     "due": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "syn-028",
+   "items": [
+    {
+     "type": "deadline",
+     "what": "Complete exam registration",
+     "due": "2026-11-25"
+    }
+   ]
+  },
+  {
+   "id": "syn-033",
+   "items": [
+    {
+     "type": "waiting_on",
+     "what": "Send quote",
+     "due": ""
+    }
+   ]
+  },
+  {
+   "id": "syn-038",
+   "items": [
+    {
+     "type": "waiting_on",
+     "what": "Confirm booking",
+     "due": "2026-11-21"
+    }
+   ]
+  },
+  {
+   "id": "syn-040",
+   "items": [
+    {
+     "type": "my_promise",
+     "what": "Send update",
+     "due": "2026-11-17"
+    }
+   ]
+  }
+ ],
+ "wrongDates": []
+}

@@ -25,3 +25,6 @@ clean/
 
 # Stage A sheet exports (contain email-derived data)
 migration-data/
+
+# synthetic eval model-answer cache
+eval/.cache-synthetic.json

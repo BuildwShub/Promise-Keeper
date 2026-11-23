@@ -91,7 +91,32 @@ A tool that reads your mail has to earn trust, so every prompt change is scored 
 
 <p align="center"><img src="docs/images/eval-runs.png" alt="The /admin/eval page listing runs and the pass/fail gate" width="560"></p>
 
-> **Honest limits.** Only **9 of the 106 emails contain a real commitment**, so recall rests on 9 examples and one more miss would move it by about 11 points. The strong claim is the *zero false alarms across 97 emails*; the recall figure is directional. Growing the set of real positive examples is the next measurement step. Real-world acceptance and on-time rates need weeks of use and are tracked on the `/metrics` page.
+> **Honest limits.** Only **9 of the 106 emails contain a real commitment**, so recall rests on 9 examples and one more miss would move it by about 11 points. The strong claim is the *zero false alarms across 97 emails*; the recall figure is directional. The synthetic test below adds weight, and growing the set of real positive examples is the next measurement step. Real-world acceptance and on-time rates need weeks of use and are tracked on the `/metrics` page.
+
+### A second, larger test: 76 synthetic emails
+
+Because the real set has only 9 positives, I wrote **76 invented emails** with answers worked out from the prompt's date rules *before* running anything: 49 contain real commitments (**53 expected items**: 19 promises, 14 requests, 7 deadlines, 13 waiting-on), 27 contain nothing (polite replies, OTPs, receipts, past events, hypotheticals, and five promo traps such as "Apply now, closes 30 Nov"). They cover Hinglish and emails with several items. They run through the **same prompt, validation and scoring code** as the app, and **the prompt was not changed after seeing the results** (still v2).
+
+<p align="center"><img src="docs/images/synthetic-results.svg" alt="Precision and recall on the synthetic test set, by kind of email" width="820"></p>
+
+| Strict scoring (word-overlap match) | Result |
+| --- | --- |
+| Precision | **92.3%** (48 correct, 4 flagged as false alarms) |
+| Recall | **90.6%** (48 of 53 found) |
+| Date accuracy | **100%** (42 of 42 dated items correct, including "next Tuesday", "end of week", "in 3 days", "kal tak") |
+| Gate | ✅ PASS |
+
+| Item type | Found | Missed | False alarms |
+| --- | --- | --- | --- |
+| My promise | 17 | 2 | 2 |
+| Request to me | 14 | 0 | 0 |
+| Deadline | 6 | 1 | 1 |
+| Waiting on | 11 | 2 | 1 |
+
+**Reading the 4 "false alarms" and 5 "misses" honestly.** I listed every one. Four of the four false alarms and four of the five misses are the *same four emails*: the model found the right commitment, with the right date, but phrased it differently from my label, and the scorer matches on word overlap, so each counted twice. For example the model wrote "Have the audit summary ready" where I wrote "Prepare audit summary", and "Get back with the quote" where I wrote "Send quote". Judged by meaning, those four are correct. That leaves **one genuine miss** ("Can you confirm the booking in 2 days?" in a sent mail) and **zero invented items**. I report the strict numbers above as the result and the by-meaning reading as context. I am the one who wrote the labels, so treat the second reading as less independent.
+
+**Why this test is easier than real mail.** The emails are short and clean, I wrote the prompt and the cases, and some phrasings echo patterns the prompt describes. It answers a different question than the real set: *does the extractor handle each kind of commitment, date style and language?* The real 106-email set stays the pass/fail gate for prompt changes. Reproduce with `node eval/build-synthetic.js` and `node eval/run-synthetic.js`; every miss is listed in [`eval/synthetic-results.json`](eval/synthetic-results.json).
+
 
 ---
 

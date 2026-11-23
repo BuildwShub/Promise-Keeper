@@ -1,0 +1,1348 @@
+{
+ "generated": "eval/build-synthetic.js",
+ "owner": "alex.morgan@example.com",
+ "timezone": "Asia/Kolkata",
+ "cases": [
+  {
+   "id": "syn-001",
+   "direction": "sent",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Neha <neha@example.com>",
+   "subject": "Vendor contract",
+   "body": "Hi Neha,\n\nI'll send the vendor contract by Friday.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send vendor contract",
+     "due": "2026-11-20"
+    }
+   ],
+   "tags": [
+    "my_promise"
+   ]
+  },
+  {
+   "id": "syn-002",
+   "direction": "sent",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Rohan <rohan@example.com>",
+   "subject": "Slides",
+   "body": "Hi Rohan,\n\nThanks Rohan. I will share the slide deck tomorrow.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Share slide deck",
+     "due": "2026-11-17"
+    }
+   ],
+   "tags": [
+    "my_promise"
+   ]
+  },
+  {
+   "id": "syn-003",
+   "direction": "sent",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Kavya <kavya@example.com>",
+   "subject": "Audit",
+   "body": "Hi Kavya,\n\nI'll have the audit summary ready by end of week.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Prepare audit summary",
+     "due": "2026-11-20"
+    }
+   ],
+   "tags": [
+    "my_promise",
+    "date_relative"
+   ]
+  },
+  {
+   "id": "syn-004",
+   "direction": "sent",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Imran <imran@example.com>",
+   "subject": "Quote",
+   "body": "Hi Imran,\n\nWill send the revised quote in 3 days.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send revised quote",
+     "due": "2026-11-20"
+    }
+   ],
+   "tags": [
+    "my_promise",
+    "date_relative"
+   ]
+  },
+  {
+   "id": "syn-005",
+   "direction": "sent",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Dev <dev@example.com>",
+   "subject": "Venue",
+   "body": "Hi Dev,\n\nI'll book the venue by the 25th.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Book venue",
+     "due": "2026-11-25"
+    }
+   ],
+   "tags": [
+    "my_promise",
+    "date_absolute"
+   ]
+  },
+  {
+   "id": "syn-006",
+   "direction": "sent",
+   "sentIso": "2026-11-20T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Sara <sara@example.com>",
+   "subject": "Invoice",
+   "body": "Hi Sara,\n\nSure, I'll send you the invoice next Tuesday.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send invoice",
+     "due": "2026-11-24"
+    }
+   ],
+   "tags": [
+    "my_promise",
+    "date_relative"
+   ]
+  },
+  {
+   "id": "syn-007",
+   "direction": "sent",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Omar <omar@example.com>",
+   "subject": "Report",
+   "body": "Hi Omar,\n\nI'll finish the report by EOD.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Finish report",
+     "due": "2026-11-16"
+    }
+   ],
+   "tags": [
+    "my_promise",
+    "date_relative"
+   ]
+  },
+  {
+   "id": "syn-008",
+   "direction": "sent",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Lena <lena@example.com>",
+   "subject": "Photos",
+   "body": "Hi Lena,\n\nI'll send you the photos tonight.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send photos",
+     "due": "2026-11-17"
+    }
+   ],
+   "tags": [
+    "my_promise",
+    "date_relative"
+   ]
+  },
+  {
+   "id": "syn-009",
+   "direction": "sent",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Tariq <tariq@example.com>",
+   "subject": "Budget numbers",
+   "body": "Hi Tariq,\n\nI'll get you the budget numbers sometime next week.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send budget numbers",
+     "due": ""
+    }
+   ],
+   "tags": [
+    "my_promise",
+    "date_vague"
+   ]
+  },
+  {
+   "id": "syn-010",
+   "direction": "sent",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Mei <mei@example.com>",
+   "subject": "Expense claim",
+   "body": "Hi Mei,\n\nI'll submit the expense claim on 3 Dec.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Submit expense claim",
+     "due": "2026-12-03"
+    }
+   ],
+   "tags": [
+    "my_promise",
+    "date_absolute"
+   ]
+  },
+  {
+   "id": "syn-011",
+   "direction": "sent",
+   "sentIso": "2026-11-20T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Jon <jon@example.com>",
+   "subject": "Contract draft",
+   "body": "Hi Jon,\n\nI promise to send the contract draft on Monday.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send contract draft",
+     "due": "2026-11-23"
+    }
+   ],
+   "tags": [
+    "my_promise"
+   ]
+  },
+  {
+   "id": "syn-012",
+   "direction": "sent",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Asha <asha@example.com>",
+   "subject": "Supplier call",
+   "body": "Hi Asha,\n\nI'll call the supplier and send you a summary by Thursday.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send supplier call summary",
+     "due": "2026-11-19"
+    }
+   ],
+   "tags": [
+    "my_promise"
+   ]
+  },
+  {
+   "id": "syn-013",
+   "direction": "inbox",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Maya <maya@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Proposal",
+   "body": "Hi Alex,\n\nCan you review the proposal by EOD?\n\nRegards,\nMaya",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Review proposal",
+     "due": "2026-11-19"
+    }
+   ],
+   "tags": [
+    "has_request",
+    "date_relative"
+   ]
+  },
+  {
+   "id": "syn-014",
+   "direction": "inbox",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Victor <victor@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "NDA",
+   "body": "Hi Alex,\n\nPlease send the signed NDA by Wednesday.\n\nRegards,\nVictor",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Send signed NDA",
+     "due": "2026-11-18"
+    }
+   ],
+   "tags": [
+    "has_request"
+   ]
+  },
+  {
+   "id": "syn-015",
+   "direction": "inbox",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Hana <hana@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Travel",
+   "body": "Hi Alex,\n\nCould you approve the travel request before Friday?\n\nRegards,\nHana",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Approve travel request",
+     "due": "2026-11-20"
+    }
+   ],
+   "tags": [
+    "has_request"
+   ]
+  },
+  {
+   "id": "syn-016",
+   "direction": "inbox",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "Ben <ben@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Onboarding",
+   "body": "Hi Alex,\n\nPlease share the onboarding checklist soon.\n\nRegards,\nBen",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Share onboarding checklist",
+     "due": ""
+    }
+   ],
+   "tags": [
+    "has_request",
+    "date_vague"
+   ]
+  },
+  {
+   "id": "syn-017",
+   "direction": "inbox",
+   "sentIso": "2026-11-20T10:30:00+05:30",
+   "from": "Ria <ria@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Forecast",
+   "body": "Hi Alex,\n\nI need the Q4 forecast from you by Monday, thanks.\n\nRegards,\nRia",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Send Q4 forecast",
+     "due": "2026-11-23"
+    }
+   ],
+   "tags": [
+    "has_request"
+   ]
+  },
+  {
+   "id": "syn-018",
+   "direction": "inbox",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Sam <sam@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Pricing",
+   "body": "Hi Alex,\n\nCould you update the pricing sheet tomorrow?\n\nRegards,\nSam",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Update pricing sheet",
+     "due": "2026-11-20"
+    }
+   ],
+   "tags": [
+    "has_request",
+    "date_relative"
+   ]
+  },
+  {
+   "id": "syn-019",
+   "direction": "inbox",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "StreamFlix Billing <billing@streamflix.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Payment declined",
+   "body": "We could not process your latest payment. Please update your payment method to keep your membership active.",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Update payment method",
+     "due": ""
+    }
+   ],
+   "tags": [
+    "automated",
+    "has_request"
+   ]
+  },
+  {
+   "id": "syn-020",
+   "direction": "inbox",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "TaxPortal <no-reply@taxportal.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Action required",
+   "body": "Action required: update your tax information in your account settings so we can apply the correct rates.",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Update tax information",
+     "due": ""
+    }
+   ],
+   "tags": [
+    "automated",
+    "has_request"
+   ]
+  },
+  {
+   "id": "syn-021",
+   "direction": "inbox",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Priyanka <priyanka@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Feedback",
+   "body": "Hi Alex,\n\nPlease fill in the feedback form by the 18th.\n\nRegards,\nPriyanka",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Fill feedback form",
+     "due": "2026-11-18"
+    }
+   ],
+   "tags": [
+    "has_request",
+    "date_absolute"
+   ]
+  },
+  {
+   "id": "syn-022",
+   "direction": "inbox",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Leo <leo@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Headcount",
+   "body": "Hi Alex,\n\nCan you confirm the headcount by Thursday?\n\nRegards,\nLeo",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Confirm headcount",
+     "due": "2026-11-19"
+    }
+   ],
+   "tags": [
+    "has_request"
+   ]
+  },
+  {
+   "id": "syn-023",
+   "direction": "inbox",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "SafeLife Insurance <billing@safelife.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Premium reminder",
+   "body": "Reminder: your annual insurance premium is due 28 Nov.",
+   "expected": [
+    {
+     "type": "deadline",
+     "what": "Pay insurance premium",
+     "due": "2026-11-28"
+    }
+   ],
+   "tags": [
+    "has_deadline",
+    "date_absolute"
+   ]
+  },
+  {
+   "id": "syn-024",
+   "direction": "inbox",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Revenue Dept <noreply@revenue.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Tax declaration",
+   "body": "Your tax declaration must be submitted before the 30th.",
+   "expected": [
+    {
+     "type": "deadline",
+     "what": "Submit tax declaration",
+     "due": "2026-11-30"
+    }
+   ],
+   "tags": [
+    "has_deadline",
+    "date_absolute"
+   ]
+  },
+  {
+   "id": "syn-025",
+   "direction": "inbox",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "City Library <desk@library.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Overdue fine",
+   "body": "Your library fine of Rs 200 must be paid by 30 Nov to avoid suspension of your membership.",
+   "expected": [
+    {
+     "type": "deadline",
+     "what": "Pay library fine",
+     "due": "2026-11-30"
+    }
+   ],
+   "tags": [
+    "has_deadline",
+    "date_absolute"
+   ]
+  },
+  {
+   "id": "syn-026",
+   "direction": "inbox",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Passport Office <help@passport.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Documents",
+   "body": "Your passport renewal documents are due by 2 Dec.",
+   "expected": [
+    {
+     "type": "deadline",
+     "what": "Submit passport renewal documents",
+     "due": "2026-12-02"
+    }
+   ],
+   "tags": [
+    "has_deadline",
+    "date_absolute"
+   ]
+  },
+  {
+   "id": "syn-027",
+   "direction": "inbox",
+   "sentIso": "2026-11-20T10:30:00+05:30",
+   "from": "HostRight <billing@hostright.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Domain renewal",
+   "body": "Your domain renewal is due 5 Dec. Please renew to keep your site online.",
+   "expected": [
+    {
+     "type": "deadline",
+     "what": "Renew domain",
+     "due": "2026-12-05"
+    }
+   ],
+   "tags": [
+    "has_deadline",
+    "date_absolute"
+   ]
+  },
+  {
+   "id": "syn-028",
+   "direction": "inbox",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "Exam Cell <exams@college.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Registration",
+   "body": "Exam registration closes on 25 Nov. You must register to appear in the exam.",
+   "expected": [
+    {
+     "type": "deadline",
+     "what": "Complete exam registration",
+     "due": "2026-11-25"
+    }
+   ],
+   "tags": [
+    "has_deadline",
+    "date_absolute"
+   ]
+  },
+  {
+   "id": "syn-029",
+   "direction": "inbox",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Priya <priya@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Figures",
+   "body": "Hi Alex,\n\nPriya will send the final figures on Monday.\n\nBest,\nPriya",
+   "expected": [
+    {
+     "type": "waiting_on",
+     "what": "Send final figures",
+     "due": "2026-11-23"
+    }
+   ],
+   "tags": [
+    "has_waiting"
+   ]
+  },
+  {
+   "id": "syn-030",
+   "direction": "sent",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Gita <gita@example.com>",
+   "subject": "Invoice",
+   "body": "Hi Gita,\n\nCan you send me the invoice by Wednesday?\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "waiting_on",
+     "what": "Send invoice",
+     "due": "2026-11-18"
+    }
+   ],
+   "tags": [
+    "has_waiting"
+   ]
+  },
+  {
+   "id": "syn-031",
+   "direction": "inbox",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Joel <joel@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Order",
+   "body": "Hi Alex,\n\nOur vendor confirmed they'll ship the order by next Friday.\n\nBest,\nJoel",
+   "expected": [
+    {
+     "type": "waiting_on",
+     "what": "Ship order",
+     "due": "2026-11-27"
+    }
+   ],
+   "tags": [
+    "has_waiting",
+    "date_relative"
+   ]
+  },
+  {
+   "id": "syn-032",
+   "direction": "sent",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Nadia <nadia@example.com>",
+   "subject": "Contract",
+   "body": "Hi Nadia,\n\nCould you share the draft contract by Friday?\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "waiting_on",
+     "what": "Share draft contract",
+     "due": "2026-11-20"
+    }
+   ],
+   "tags": [
+    "has_waiting"
+   ]
+  },
+  {
+   "id": "syn-033",
+   "direction": "inbox",
+   "sentIso": "2026-11-20T10:30:00+05:30",
+   "from": "Sam <sam@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Quote",
+   "body": "Hi Alex,\n\nSam said he'd get back to us with the quote early next week.\n\nBest,\nSam",
+   "expected": [
+    {
+     "type": "waiting_on",
+     "what": "Send quote",
+     "due": ""
+    }
+   ],
+   "tags": [
+    "has_waiting",
+    "date_vague"
+   ]
+  },
+  {
+   "id": "syn-034",
+   "direction": "sent",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Zoe <zoe@example.com>",
+   "subject": "Signed form",
+   "body": "Hi Zoe,\n\nPlease send me the signed form as soon as possible.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "waiting_on",
+     "what": "Send signed form",
+     "due": ""
+    }
+   ],
+   "tags": [
+    "has_waiting",
+    "date_vague"
+   ]
+  },
+  {
+   "id": "syn-035",
+   "direction": "inbox",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Dev <dev@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Fix",
+   "body": "Hi Alex,\n\nThe dev team will deploy the fix tomorrow.\n\nBest,\nDev",
+   "expected": [
+    {
+     "type": "waiting_on",
+     "what": "Deploy fix",
+     "due": "2026-11-17"
+    }
+   ],
+   "tags": [
+    "has_waiting",
+    "date_relative"
+   ]
+  },
+  {
+   "id": "syn-036",
+   "direction": "sent",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Ira <ira@example.com>",
+   "subject": "Photos",
+   "body": "Hi Ira,\n\nCould you send over the photos by tomorrow?\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "waiting_on",
+     "what": "Send photos",
+     "due": "2026-11-18"
+    }
+   ],
+   "tags": [
+    "has_waiting",
+    "date_relative"
+   ]
+  },
+  {
+   "id": "syn-037",
+   "direction": "inbox",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "Finance <finance@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Payment",
+   "body": "Hi Alex,\n\nFinance will release the payment on the 24th.\n\nBest,\nFinance",
+   "expected": [
+    {
+     "type": "waiting_on",
+     "what": "Release payment",
+     "due": "2026-11-24"
+    }
+   ],
+   "tags": [
+    "has_waiting",
+    "date_absolute"
+   ]
+  },
+  {
+   "id": "syn-038",
+   "direction": "sent",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Kabir <kabir@example.com>",
+   "subject": "Booking",
+   "body": "Hi Kabir,\n\nCan you confirm the booking in 2 days?\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "waiting_on",
+     "what": "Confirm booking",
+     "due": "2026-11-21"
+    }
+   ],
+   "tags": [
+    "has_waiting",
+    "date_relative"
+   ]
+  },
+  {
+   "id": "syn-039",
+   "direction": "sent",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Rahul <rahul@example.com>",
+   "subject": "Item",
+   "body": "Hi,\n\nTheek hai, parso tak bhej dunga.\n\nThanks",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send requested item",
+     "due": "2026-11-21"
+    }
+   ],
+   "tags": [
+    "hinglish"
+   ]
+  },
+  {
+   "id": "syn-040",
+   "direction": "sent",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Rahul <rahul@example.com>",
+   "subject": "Update",
+   "body": "Hi,\n\nKal tak update de dunga.\n\nThanks",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send update",
+     "due": "2026-11-17"
+    }
+   ],
+   "tags": [
+    "hinglish"
+   ]
+  },
+  {
+   "id": "syn-041",
+   "direction": "inbox",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Rahul <rahul@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Form",
+   "body": "Hi,\n\nKal tak form bhej dena please.\n\nThanks",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Send form",
+     "due": "2026-11-18"
+    }
+   ],
+   "tags": [
+    "hinglish"
+   ]
+  },
+  {
+   "id": "syn-042",
+   "direction": "inbox",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "Rahul <rahul@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Report",
+   "body": "Hi,\n\nAaj shaam tak report bhej dena.\n\nThanks",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Send report",
+     "due": "2026-11-18"
+    }
+   ],
+   "tags": [
+    "hinglish"
+   ]
+  },
+  {
+   "id": "syn-043",
+   "direction": "sent",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Rahul <rahul@example.com>",
+   "subject": "Invoice",
+   "body": "Hi,\n\nAgle hafte invoice bhej dunga.\n\nThanks",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send invoice",
+     "due": ""
+    }
+   ],
+   "tags": [
+    "hinglish"
+   ]
+  },
+  {
+   "id": "syn-044",
+   "direction": "sent",
+   "sentIso": "2026-11-20T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Rahul <rahul@example.com>",
+   "subject": "Design",
+   "body": "Hi,\n\nBilkul, Monday tak design bhej dunga.\n\nThanks",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send design",
+     "due": "2026-11-23"
+    }
+   ],
+   "tags": [
+    "hinglish"
+   ]
+  },
+  {
+   "id": "syn-045",
+   "direction": "inbox",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Rahul <rahul@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Files",
+   "body": "Hi,\n\nRahul kal tak files bhej dega.\n\nThanks",
+   "expected": [
+    {
+     "type": "waiting_on",
+     "what": "Send files",
+     "due": "2026-11-17"
+    }
+   ],
+   "tags": [
+    "hinglish"
+   ]
+  },
+  {
+   "id": "syn-046",
+   "direction": "sent",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Rahul <rahul@example.com>",
+   "subject": "Check",
+   "body": "Hi,\n\nHaan, main dekh leta hoon.\n\nThanks",
+   "expected": [],
+   "tags": [
+    "hinglish"
+   ]
+  },
+  {
+   "id": "syn-047",
+   "direction": "sent",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Rahul <rahul@example.com>",
+   "subject": "Later",
+   "body": "Hi,\n\nThik hai, baad mein baat karte hain.\n\nThanks",
+   "expected": [],
+   "tags": [
+    "hinglish"
+   ]
+  },
+  {
+   "id": "syn-048",
+   "direction": "inbox",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Mira <mira@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Draft and budget",
+   "body": "Hi Alex,\n\nCan you review the draft by Friday? Also, Mira will send the budget on Monday.\n\nRegards",
+   "expected": [
+    {
+     "type": "request_to_me",
+     "what": "Review draft",
+     "due": "2026-11-20"
+    },
+    {
+     "type": "waiting_on",
+     "what": "Send budget",
+     "due": "2026-11-23"
+    }
+   ],
+   "tags": [
+    "has_request",
+    "has_waiting",
+    "multi"
+   ]
+  },
+  {
+   "id": "syn-049",
+   "direction": "sent",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Tess <tess@example.com>",
+   "subject": "Agenda",
+   "body": "Hi Tess,\n\nI'll send the agenda tomorrow, and can you send me the attendee list by Wednesday?\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send agenda",
+     "due": "2026-11-17"
+    },
+    {
+     "type": "waiting_on",
+     "what": "Send attendee list",
+     "due": "2026-11-18"
+    }
+   ],
+   "tags": [
+    "has_promise",
+    "has_waiting",
+    "multi"
+   ]
+  },
+  {
+   "id": "syn-050",
+   "direction": "inbox",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Admissions <admissions@college.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Fees and ID",
+   "body": "Fees are due 28 Nov. Please also upload your ID proof by Friday.",
+   "expected": [
+    {
+     "type": "deadline",
+     "what": "Pay fees",
+     "due": "2026-11-28"
+    },
+    {
+     "type": "request_to_me",
+     "what": "Upload ID proof",
+     "due": "2026-11-20"
+    }
+   ],
+   "tags": [
+    "has_deadline",
+    "has_request",
+    "multi"
+   ]
+  },
+  {
+   "id": "syn-051",
+   "direction": "sent",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Quinn <quinn@example.com>",
+   "subject": "Slides",
+   "body": "Hi Quinn,\n\nI'll send the slides today and the recording by Friday.\n\nThanks,\nAlex",
+   "expected": [
+    {
+     "type": "my_promise",
+     "what": "Send slides",
+     "due": "2026-11-18"
+    },
+    {
+     "type": "my_promise",
+     "what": "Send recording",
+     "due": "2026-11-20"
+    }
+   ],
+   "tags": [
+    "has_promise",
+    "multi"
+   ]
+  },
+  {
+   "id": "syn-052",
+   "direction": "sent",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Colleague <colleague@example.com>",
+   "subject": "Re: Update",
+   "body": "Hi,\n\nWill do! Thanks for sending it over.\n\nThanks,\nAlex",
+   "expected": [],
+   "tags": [
+    "polite"
+   ]
+  },
+  {
+   "id": "syn-053",
+   "direction": "sent",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Colleague <colleague@example.com>",
+   "subject": "Re: Question",
+   "body": "Hi,\n\nLet me check and get back to you.\n\nThanks,\nAlex",
+   "expected": [],
+   "tags": [
+    "polite"
+   ]
+  },
+  {
+   "id": "syn-054",
+   "direction": "inbox",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "Colleague <colleague@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Re: Files",
+   "body": "Hi Alex,\n\nThanks, noted. Appreciate the quick reply.\n\nBest",
+   "expected": [],
+   "tags": [
+    "polite"
+   ]
+  },
+  {
+   "id": "syn-055",
+   "direction": "sent",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Colleague <colleague@example.com>",
+   "subject": "Re: Plans",
+   "body": "Hi,\n\nSounds good, talk soon.\n\nThanks,\nAlex",
+   "expected": [],
+   "tags": [
+    "polite"
+   ]
+  },
+  {
+   "id": "syn-056",
+   "direction": "sent",
+   "sentIso": "2026-11-20T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Colleague <colleague@example.com>",
+   "subject": "Catch up",
+   "body": "Hi,\n\nWe should catch up sometime, it has been a while.\n\nThanks,\nAlex",
+   "expected": [],
+   "tags": [
+    "polite"
+   ]
+  },
+  {
+   "id": "syn-057",
+   "direction": "sent",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Colleague <colleague@example.com>",
+   "subject": "Re: Event",
+   "body": "Hi,\n\nI'll try to make it, but no promises.\n\nThanks,\nAlex",
+   "expected": [],
+   "tags": [
+    "polite"
+   ]
+  },
+  {
+   "id": "syn-058",
+   "direction": "inbox",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Product Weekly <news@productweekly.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "This week in product",
+   "body": "This week in product: five tips for better onboarding, a teardown of a pricing page, and the tools we are trying. Read the full issue on our site.",
+   "expected": [],
+   "tags": [
+    "marketing"
+   ]
+  },
+  {
+   "id": "syn-059",
+   "direction": "inbox",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "CareerHub <jobs@careerhub.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Internships",
+   "body": "Apply now! Internship applications close 30 Nov. Do not miss your chance to join a top team.",
+   "expected": [],
+   "tags": [
+    "marketing",
+    "trap"
+   ]
+  },
+  {
+   "id": "syn-060",
+   "direction": "inbox",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "SecureBank <alerts@securebank.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Your code",
+   "body": "Your verification code is 482913. Do not share it with anyone. It expires in 10 minutes.",
+   "expected": [],
+   "tags": [
+    "automated"
+   ]
+  },
+  {
+   "id": "syn-061",
+   "direction": "inbox",
+   "sentIso": "2026-11-20T10:30:00+05:30",
+   "from": "ShopFast <orders@shopfast.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Order shipped",
+   "body": "Good news! Your order has shipped and will arrive on Friday. Track it from your account.",
+   "expected": [],
+   "tags": [
+    "automated"
+   ]
+  },
+  {
+   "id": "syn-062",
+   "direction": "inbox",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Accounts <security@accounts.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "New sign-in",
+   "body": "New sign-in to your account from Chrome on Windows. If this was you, no action is needed.",
+   "expected": [],
+   "tags": [
+    "automated"
+   ]
+  },
+  {
+   "id": "syn-063",
+   "direction": "inbox",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Calendar <calendar@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Invitation",
+   "body": "Invitation: Weekly sync, Tuesday at 3pm. Join with the link in the calendar event.",
+   "expected": [],
+   "tags": [
+    "automated"
+   ]
+  },
+  {
+   "id": "syn-064",
+   "direction": "inbox",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "LearnLab <events@learnlab.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Webinar",
+   "body": "Join our free webinar on 27 Nov and learn how top teams ship faster. Register now, seats are limited.",
+   "expected": [],
+   "tags": [
+    "marketing",
+    "trap"
+   ]
+  },
+  {
+   "id": "syn-065",
+   "direction": "inbox",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "GadgetMart <deals@gadgetmart.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Flash sale",
+   "body": "Flash sale! 40% off everything. Offer ends Sunday, so grab your favourites today.",
+   "expected": [],
+   "tags": [
+    "marketing",
+    "trap"
+   ]
+  },
+  {
+   "id": "syn-066",
+   "direction": "sent",
+   "sentIso": "2026-11-20T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Colleague <colleague@example.com>",
+   "subject": "Re: Report",
+   "body": "Hi,\n\nI sent the report yesterday, let me know if you got it.\n\nThanks,\nAlex",
+   "expected": [],
+   "tags": [
+    "past"
+   ]
+  },
+  {
+   "id": "syn-067",
+   "direction": "sent",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Colleague <colleague@example.com>",
+   "subject": "Re: Deck",
+   "body": "Hi,\n\nIf I had more time I would redo the whole deck from scratch.\n\nThanks,\nAlex",
+   "expected": [],
+   "tags": [
+    "hypothetical"
+   ]
+  },
+  {
+   "id": "syn-068",
+   "direction": "inbox",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "ShopFast <receipts@shopfast.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Your receipt",
+   "body": "Thank you for your purchase. Your receipt is attached. Order number 4821.",
+   "expected": [],
+   "tags": [
+    "automated"
+   ]
+  },
+  {
+   "id": "syn-069",
+   "direction": "inbox",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "SafeBank <statements@safebank.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Statement",
+   "body": "Your monthly statement is ready to view online. Sign in to see your transactions.",
+   "expected": [],
+   "tags": [
+    "automated"
+   ]
+  },
+  {
+   "id": "syn-070",
+   "direction": "inbox",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Colleague <colleague@example.com>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Birthday",
+   "body": "Happy birthday Alex! Hope you have a great day and a wonderful year ahead.",
+   "expected": [],
+   "tags": [
+    "human"
+   ]
+  },
+  {
+   "id": "syn-071",
+   "direction": "inbox",
+   "sentIso": "2026-11-20T10:30:00+05:30",
+   "from": "RideNow <offers@ridenow.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Refer a friend",
+   "body": "Refer a friend and get Rs 500 off your next ride. Offer valid till 31 Dec.",
+   "expected": [],
+   "tags": [
+    "marketing",
+    "trap"
+   ]
+  },
+  {
+   "id": "syn-072",
+   "direction": "inbox",
+   "sentIso": "2026-11-16T10:30:00+05:30",
+   "from": "TalentPool <hiring@talentpool.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Hiring",
+   "body": "Senior roles are hiring now. Apply before 1 Dec and get fast-tracked.",
+   "expected": [],
+   "tags": [
+    "marketing",
+    "trap"
+   ]
+  },
+  {
+   "id": "syn-073",
+   "direction": "sent",
+   "sentIso": "2026-11-17T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Colleague <colleague@example.com>",
+   "subject": "Re: Launch",
+   "body": "Hi team,\n\nThanks for the update, great work everyone.\n\nThanks,\nAlex",
+   "expected": [],
+   "tags": [
+    "polite"
+   ]
+  },
+  {
+   "id": "syn-074",
+   "direction": "inbox",
+   "sentIso": "2026-11-18T10:30:00+05:30",
+   "from": "Facilities <office@company.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Notice",
+   "body": "FYI: the office will be closed on Friday for routine maintenance.",
+   "expected": [],
+   "tags": [
+    "human"
+   ]
+  },
+  {
+   "id": "syn-075",
+   "direction": "sent",
+   "sentIso": "2026-11-19T10:30:00+05:30",
+   "from": "Alex Morgan <alex.morgan@example.com>",
+   "to": "Colleague <colleague@example.com>",
+   "subject": "Re: Launch",
+   "body": "Hi,\n\nCongrats on the launch, well deserved!\n\nThanks,\nAlex",
+   "expected": [],
+   "tags": [
+    "polite"
+   ]
+  },
+  {
+   "id": "syn-076",
+   "direction": "inbox",
+   "sentIso": "2026-11-20T10:30:00+05:30",
+   "from": "Accounts <security@accounts.example>",
+   "to": "Alex Morgan <alex.morgan@example.com>",
+   "subject": "Password changed",
+   "body": "Your password was changed successfully. If you did not do this, contact support.",
+   "expected": [],
+   "tags": [
+    "automated"
+   ]
+  }
+ ]
+}

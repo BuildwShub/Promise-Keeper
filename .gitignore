@@ -28,3 +28,7 @@ migration-data/
 
 # synthetic eval model-answer cache
 eval/.cache-synthetic.json
+
+# promo video build files
+docs/promo/_tmp/
+docs/promo/preview/

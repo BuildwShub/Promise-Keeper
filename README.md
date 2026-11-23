@@ -9,6 +9,12 @@ It finds what *you* promised, what others asked of *you*, hard deadlines, and wh
 
 <br>
 
+<a href="docs/promo/promise-keeper-promo.mp4"><img src="docs/promo/poster.png" alt="Watch the 2 minute 47 second narrated story" width="760"></a>
+
+<sub><b>Watch the story</b> (narrated, 2:47) · <a href="docs/promo/narration.md">script</a> · quick silent version below</sub>
+
+<br>
+
 <img src="docs/images/demo.gif" alt="Walkthrough: the problem, an email with the extracted promise, the morning digest, the dashboard and the evaluation numbers" width="760">
 
 <sub>Walkthrough built from real screenshots. Want to see it live? <a href="docs/demo-script.md">Recording script</a>.</sub>

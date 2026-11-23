@@ -17,7 +17,8 @@ export async function computeMetrics(db: SupabaseClient, userId: string, tz: str
   const [items, feedback, events, evals] = await Promise.all([
     db.from('items').select('status,due,completed_at,created_at').eq('user_id', userId),
     db.from('feedback').select('item_id,action,before_json').eq('user_id', userId),
-    db.from('events').select('ts,event,meta').eq('user_id', userId),
+    // Only digest events feed the metrics; the 'scan' and 'push' rows pile up every few minutes and are large.
+    db.from('events').select('ts,event,meta').eq('user_id', userId).in('event', ['digest_sent', 'digest_open', 'digest_click']),
     db.from('eval_runs').select('*').eq('user_id', userId).order('ts', { ascending: true }),
   ]);
   for (const r of [items, feedback, events, evals]) if (r.error) throw new Error('metrics query failed: ' + r.error.message);

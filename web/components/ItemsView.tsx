@@ -12,9 +12,9 @@ export function Info({ text, label = 'More info' }: { text: string; label?: stri
   return <details className="info"><summary aria-label={label} title={text}>i</summary><div role="tooltip">{text}</div></details>;
 }
 
-export default function ItemsView({ all, items: tabItems, filter, tab, edit, notice, today, link, count, acceptAction, dismissAction, doneAction, editAction }: {
+export default function ItemsView({ all, items: tabItems, filter, tab, edit, notice, today, link, count, acceptAction, dismissAction, doneAction, editAction, banner }: {
   all: Item[]; items: Item[]; filter?: string; tab: string; edit?: string; notice?: string; today: string; link: (t: string) => string; count: (t: string) => number;
-  acceptAction: Act; dismissAction: Act; doneAction: Act; editAction: Act;
+  acceptAction: Act; dismissAction: Act; doneAction: Act; editAction: Act; banner?: React.ReactNode;
 }) {
   const STATUSES: Record<string, string[]> = { open: ['suggested', 'accepted', 'possibly_resolved'], done: ['done'], dismissed: ['dismissed'] };
   const open = all.filter((i) => STATUSES.open.includes(i.status));
@@ -52,6 +52,7 @@ export default function ItemsView({ all, items: tabItems, filter, tab, edit, not
   return (
     <main className="flat">
       <h1>Your promises <Info text="Promise Keeper reads your Gmail (Inbox and Sent) and lists what you promised, what you were asked, deadlines, and what others owe you. Every item quotes the sentence it came from. It never sends email for you." label="About this page" /></h1>
+      {banner}
       <p className="muted">{nReview ? `${nReview} suggestion${nReview === 1 ? '' : 's'} to review` : 'What you promised, what was asked of you, and what others owe you.'}</p>
       <div className="tiles">{T('overdue', nOver, 'Overdue', '#EA4335', 'Open items whose date has passed. Click to show only these.')}{T('today', nToday, 'Due today', '#F9AB00', 'Open items due today. Click to show only these.')}{T('review', nReview, 'To review', '#4285F4', 'Suggestions Promise Keeper found. Nothing is added to Tasks or Calendar until you press Accept.')}{T('waiting', nWait, 'Waiting on others', '#34A853', 'Things other people promised you. Click to show only these.')}</div>
       <div className="tabs">

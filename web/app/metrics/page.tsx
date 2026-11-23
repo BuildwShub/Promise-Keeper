@@ -15,8 +15,8 @@ export default async function Metrics() {
   if (!uid) redirect('/settings');
   const db = userClient(uid);
   const { data: me } = await db.from('users').select('timezone').eq('id', uid).maybeSingle();
-  const { rows } = await computeMetrics(db, uid, me?.timezone ?? 'Asia/Kolkata');
-
-  const charts = await chartData(db, uid, me?.timezone ?? 'Asia/Kolkata');
+  const tz = me?.timezone ?? 'Asia/Kolkata';
+  // Both read-only and independent: run together.
+  const [{ rows }, charts] = await Promise.all([computeMetrics(db, uid, tz), chartData(db, uid, tz)]);
   return <MetricsView rows={rows}><MetricsCharts data={charts} /></MetricsView>;
 }

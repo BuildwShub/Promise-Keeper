@@ -96,6 +96,40 @@ export async function drainQueue(db: SupabaseClient, user: UserCtx, token: strin
   return stats;
 }
 
+/**
+ * First scan: queue the newest 7 days first (separate insert, so they drain first), then the rest of the 30 days.
+ * Same total work as before; the useful results just appear sooner.
+ */
+export async function enqueueBackfill(db: SupabaseClient, userId: string, access: string): Promise<number> {
+  const recent = await listIds(access, CONFIG.BACKFILL_QUERY_FAST, CONFIG.BACKFILL_LIMIT);
+  const a = await enqueue(db, userId, recent.map((r) => r.id));
+  const all = await listIds(access, CONFIG.BACKFILL_QUERY, CONFIG.BACKFILL_LIMIT);
+  const b = await enqueue(db, userId, all.map((r) => r.id));
+  return a + b;
+}
+
+export interface ScanState { queued: number; processed: number }
+
+/** Counts for the sign-in progress bar. Caller has already verified the user id. */
+export async function scanState(db: SupabaseClient, userId: string): Promise<ScanState> {
+  const [q, p] = await Promise.all([
+    db.from('message_queue').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+    db.from('processed_messages').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+  ]);
+  return { queued: q.count ?? 0, processed: p.count ?? 0 };
+}
+
+/** On-demand scan for the signed-in user (progress bar): queue the first scan if nothing was ever processed, then drain for the time budget. */
+export async function scanNow(db: SupabaseClient, user: UserCtx, deadlineMs: number): Promise<RunStats & ScanState> {
+  const { data: tok, error } = await db.from('oauth_tokens').select('refresh_token_enc').eq('user_id', user.id).maybeSingle();
+  if (error || !tok) throw new Error('no token for user');
+  const access = await accessTokenFor(decrypt(tok.refresh_token_enc));
+  const before = await scanState(db, user.id);
+  if (before.processed === 0 && before.queued === 0) await enqueueBackfill(db, user.id, access);
+  const stats = await drainQueue(db, user, access, deadlineMs);
+  return { ...stats, ...(await scanState(db, user.id)) };
+}
+
 /** Sweep: find recent unprocessed messages (safety net for missed pushes), and keep the Gmail watch alive. */
 export async function sweepUser(db: SupabaseClient, user: UserCtx, deadlineMs: number, forceBackfill = false): Promise<RunStats & { enqueued: number; watch: string }> {
   const { data: tok, error } = await db.from('oauth_tokens').select('refresh_token_enc,watch_expiration,gmail_history_id').eq('user_id', user.id).maybeSingle();
@@ -124,8 +158,7 @@ export async function sweepUser(db: SupabaseClient, user: UserCtx, deadlineMs: n
 
   const { count } = await db.from('processed_messages').select('*', { count: 'exact', head: true }).eq('user_id', user.id);
   const first = forceBackfill || (count ?? 0) === 0;
-  const refs = await listIds(access, first ? CONFIG.BACKFILL_QUERY : CONFIG.SCAN_QUERY, first ? CONFIG.BACKFILL_LIMIT : CONFIG.SCAN_LIMIT);
-  const enqueued = await enqueue(db, user.id, refs.map((r) => r.id));
+  const enqueued = first ? await enqueueBackfill(db, user.id, access) : await enqueue(db, user.id, (await listIds(access, CONFIG.SCAN_QUERY, CONFIG.SCAN_LIMIT)).map((r) => r.id));
   const stats = await drainQueue(db, user, access, deadlineMs);
   // Housekeeping that must not fail the sweep: Tasks completion sync, then auto-add (off unless the user enabled it).
   let sync: unknown = null, auto = 0;

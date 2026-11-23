@@ -7,6 +7,7 @@ export const CONFIG = {
   MIN_BODY_CHARS: 20,
   DEDUP_JACCARD: 0.6,
   SCAN_QUERY: '(in:sent OR in:inbox) newer_than:2d -category:promotions -category:social -in:chats -subject:"[Promise Keeper]"',
+  BACKFILL_QUERY_FAST: '(in:sent OR in:inbox) newer_than:7d -category:promotions -category:social -in:chats -subject:"[Promise Keeper]"',
   BACKFILL_QUERY: '(in:sent OR in:inbox) newer_than:30d -category:promotions -category:social -in:chats -subject:"[Promise Keeper]"',
   SCAN_LIMIT: 40,
   BACKFILL_LIMIT: 200,

@@ -8,18 +8,35 @@ const TYPE_LABEL: Record<string, string> = { my_promise: 'I promised', request_t
 const TYPES = Object.keys(TYPE_LABEL);
 type Act = (form: FormData) => void | Promise<void>;
 
-export default function ItemsView({ all, items, tab, edit, notice, today, link, count, acceptAction, dismissAction, doneAction, editAction }: {
-  all: Item[]; items: Item[]; tab: string; edit?: string; notice?: string; today: string; link: (t: string) => string; count: (t: string) => number;
+export function Info({ text, label = 'More info' }: { text: string; label?: string }) {
+  return <details className="info"><summary aria-label={label} title={text}>i</summary><div role="tooltip">{text}</div></details>;
+}
+
+export default function ItemsView({ all, items: tabItems, filter, tab, edit, notice, today, link, count, acceptAction, dismissAction, doneAction, editAction }: {
+  all: Item[]; items: Item[]; filter?: string; tab: string; edit?: string; notice?: string; today: string; link: (t: string) => string; count: (t: string) => number;
   acceptAction: Act; dismissAction: Act; doneAction: Act; editAction: Act;
 }) {
   const STATUSES: Record<string, string[]> = { open: ['suggested', 'accepted', 'possibly_resolved'], done: ['done'], dismissed: ['dismissed'] };
   const open = all.filter((i) => STATUSES.open.includes(i.status));
+  const FILTERS: Record<string, (i: Item) => boolean> = {
+    overdue: (i) => !!i.due && Dates.bucket(i.due, today) === 'overdue',
+    today: (i) => !!i.due && Dates.bucket(i.due, today) === 'today',
+    review: (i) => i.status === 'suggested',
+    waiting: (i) => i.type === 'waiting_on',
+  };
+  const FILTER_LABEL: Record<string, string> = { overdue: 'Overdue', today: 'Due today', review: 'To review', waiting: 'Waiting on others' };
+  const active = filter && FILTERS[filter] ? filter : '';
+  const items = active ? tabItems.filter(FILTERS[active]) : tabItems;
   const nOver = open.filter((i) => i.due && Dates.bucket(i.due, today) === 'overdue').length;
   const nToday = open.filter((i) => i.due && Dates.bucket(i.due, today) === 'today').length;
   const nWait = open.filter((i) => i.type === 'waiting_on').length;
   const nReview = open.filter((i) => i.status === 'suggested').length;
-  const T = (n: number, l: string, c: string) => <div className="tile"><b style={{ color: c }}>{n}</b><span>{l}</span></div>;
-
+  const T = (key: string, n: number, l: string, c: string, tip: string) => (
+    <div className={`tile${active === key ? ' sel' : ''}`} style={{ ['--c' as string]: c }}>
+      <a className="tilelink" href={active === key ? '/items?tab=open' : `/items?tab=open&filter=${key}`} aria-pressed={active === key}><b style={{ color: c }}>{n}</b><span>{l}</span></a>
+      <Info text={tip} label={`About ${l}`} />
+    </div>
+  );
   const GROUPS: { key: string; label: string; cls: string }[] = tab === 'open'
     ? [{ key: 'overdue', label: 'Overdue', cls: 'red' }, { key: 'today', label: 'Due today', cls: 'yellow' }, { key: 'week', label: 'This week', cls: 'blue' }, { key: 'later', label: 'Later', cls: 'grey' }, { key: 'none', label: 'No date', cls: 'grey' }]
     : [{ key: 'all', label: tab === 'done' ? 'Done' : 'Dismissed', cls: 'grey' }];
@@ -34,15 +51,16 @@ export default function ItemsView({ all, items, tab, edit, notice, today, link, 
 
   return (
     <main className="flat">
-      <h1>Your promises</h1>
+      <h1>Your promises <Info text="Promise Keeper reads your Gmail (Inbox and Sent) and lists what you promised, what you were asked, deadlines, and what others owe you. Every item quotes the sentence it came from. It never sends email for you." label="About this page" /></h1>
       <p className="muted">{nReview ? `${nReview} suggestion${nReview === 1 ? '' : 's'} to review` : 'What you promised, what was asked of you, and what others owe you.'}</p>
-      <div className="tiles">{T(nOver, 'Overdue', '#EA4335')}{T(nToday, 'Due today', '#F9AB00')}{T(nReview, 'To review', '#4285F4')}{T(nWait, 'Waiting on others', '#34A853')}</div>
+      <div className="tiles">{T('overdue', nOver, 'Overdue', '#EA4335', 'Open items whose date has passed. Click to show only these.')}{T('today', nToday, 'Due today', '#F9AB00', 'Open items due today. Click to show only these.')}{T('review', nReview, 'To review', '#4285F4', 'Suggestions Promise Keeper found. Nothing is added to Tasks or Calendar until you press Accept.')}{T('waiting', nWait, 'Waiting on others', '#34A853', 'Things other people promised you. Click to show only these.')}</div>
       <div className="tabs">
         {Object.keys(STATUSES).map((t) => (
           <a key={t} href={`/items?tab=${t}`} className={`tab${t === tab ? ' on' : ''}`}>{t[0].toUpperCase() + t.slice(1)} ({count(t)})</a>
         ))}
       </div>
 
+      {active && <p className="filterbar">Showing: <b>{FILTER_LABEL[active]}</b> ({items.length}) <a href="/items?tab=open">Clear filter</a></p>}
       {notice && <p className="notice">{notice}</p>}
       {items.length === 0 && <p className="muted">Nothing here.</p>}
       {GROUPS.map((g) => {
@@ -66,7 +84,7 @@ export default function ItemsView({ all, items, tab, edit, notice, today, link, 
                       {it.status === 'possibly_resolved' && <span className="pill yellow">They may have delivered</span>}
                       {it.confidence < 0.6 && <span className="pill grey">Low confidence</span>}
                     </div>
-                    <div className="strip"><i>“{it.evidence}”</i><a href={link(it.thread_id)} target="_blank" rel="noreferrer">Open email ↗</a></div>
+                    <div className="strip"><i>“{it.evidence}”</i><Info text={`Found in your email with ${Math.round(it.confidence * 100)}% confidence. Nothing is added to Google Tasks or Calendar until you press Accept.`} label="Why am I seeing this?" /><a href={link(it.thread_id)} target="_blank" rel="noreferrer">Open email ↗</a></div>
                     {edit === it.id ? (
                       <form action={editAction} className="editform">
                         <input type="hidden" name="id" value={it.id} />

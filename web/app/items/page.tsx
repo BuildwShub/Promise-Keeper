@@ -38,10 +38,10 @@ async function editAction(form: FormData) {
 
 function todayIso() { return new Date().toISOString().slice(0, 10); }
 
-export default async function Items({ searchParams }: { searchParams: Promise<{ tab?: string; edit?: string; notice?: string }> }) {
+export default async function Items({ searchParams }: { searchParams: Promise<{ tab?: string; edit?: string; notice?: string; filter?: string }> }) {
   const uid = await uidOrNull();
   if (!uid) redirect('/settings');
-  const { tab = 'open', edit, notice } = await searchParams;
+  const { tab = 'open', edit, notice, filter } = await searchParams;
 
   const { data, error } = await userClient(uid)
     .from('items')
@@ -58,5 +58,5 @@ export default async function Items({ searchParams }: { searchParams: Promise<{ 
   const today = todayIso();
   const count = (t: string) => all.filter((i) => STATUSES[t].includes(i.status)).length;
 
-  return <ItemsView all={all} items={items} tab={tab} edit={edit} notice={notice} today={today} link={link} count={count} acceptAction={acceptAction} dismissAction={dismissAction} doneAction={doneAction} editAction={editAction} />;
+  return <ItemsView all={all} items={items} filter={filter} tab={tab} edit={edit} notice={notice} today={today} link={link} count={count} acceptAction={acceptAction} dismissAction={dismissAction} doneAction={doneAction} editAction={editAction} />;
 }

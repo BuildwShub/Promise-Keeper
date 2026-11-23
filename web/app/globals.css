@@ -76,7 +76,6 @@ button.primary { background: var(--accent); color: #fff; }
 button[type=submit]:not(.primary) { }
 
 button.primary, .btn { color: #fff !important; }
-.wm span:nth-child(1){color:#4285F4}.wm span:nth-child(2){color:#EA4335}.wm span:nth-child(3){color:#FBBC04}.wm span:nth-child(4){color:#4285F4}.wm span:nth-child(5){color:#34A853}.wm span:nth-child(6){color:#EA4335}
 
 /* ---- Item cards (final design) ---- */
 .grp { display: flex; align-items: center; gap: 10px; font-size: 1rem; font-weight: 700; margin: 26px 0 10px; padding: 0; border: 0; }
@@ -104,3 +103,25 @@ button.primary, .btn { color: #fff !important; }
 .ibtn:hover { background: var(--soft); }
 .editform label { display: block; margin: 8px 0 2px; }
 @media (max-width: 600px) { .item2 { flex-direction: column; } }
+
+/* ---- Info tooltips and filter tiles ---- */
+.info { position: relative; display: inline-block; vertical-align: middle; font-weight: 400; }
+.info summary { list-style: none; cursor: help; width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #9aa0a6; color: #5f6368; font: italic 700 11px/15px Georgia, serif; text-align: center; user-select: none; }
+.info summary::-webkit-details-marker { display: none; }
+.info summary:hover, .info[open] summary { border-color: var(--blue); color: var(--blue); }
+.info div { display: none; position: absolute; z-index: 20; top: 26px; left: -8px; width: 260px; padding: 10px 12px; border-radius: 10px; background: #3c4043; color: #fff; font: 400 .82rem/1.4 Roboto, sans-serif; font-style: normal; text-align: left; box-shadow: var(--shadow); }
+.info:hover div, .info[open] div { display: block; }
+h1 .info { margin-left: 8px; }
+.tilelink { display: block; text-decoration: none; color: inherit; padding: 14px 8px; margin: -14px -8px; }
+.tile { position: relative; display: block; color: inherit; border: 2px solid transparent; transition: transform .12s, box-shadow .12s; }
+.tile:hover { transform: translateY(-2px); }
+.tile.sel { border-color: var(--c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 18%, transparent), var(--shadow); }
+.tile .info { position: absolute; top: 8px; right: 8px; }
+.tile .info div { left: auto; right: -8px; }
+.strip .info { flex: none; }
+.strip .info div { left: auto; right: -8px; top: 24px; }
+.filterbar { background: #e8f0fe; border-radius: 12px; padding: 8px 14px; color: #1967d2; }
+.filterbar a { margin-left: 10px; font-weight: 600; }
+
+.wm b { font-weight: 700; }
+.wm .keeper { color: #5f6368; font-weight: 400; }

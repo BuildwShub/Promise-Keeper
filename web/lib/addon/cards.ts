@@ -78,9 +78,9 @@ export function threadCard(items: CardItem[], ctx: Ctx, today: string): any {
   if (!items.length) {
     const widgets: any[] = [{ textParagraph: { text: 'No promises, requests or deadlines found in this conversation yet.' } }];
     if (ctx.msgId) widgets.push({ buttonList: { buttons: [button(ctx, 'Scan this email', { op: 'scan', threadId: ctx.threadId, msgId: ctx.msgId }, true)] } });
-    return card('Promise Keeper', [{ widgets }], 'This conversation');
+    return card('This conversation', [{ widgets }]);
   }
-  return card('Promise Keeper', items.map((it) => itemSection(it, ctx, today)), `${items.length} item${items.length === 1 ? '' : 's'} found in this conversation`);
+  return card(`${items.length} promise${items.length === 1 ? '' : 's'} found`, items.map((it) => itemSection(it, ctx, today)), 'In this conversation');
 }
 
 export function homeCard(stats: { open: number; overdue: number; waiting: number; suggested: number; today?: number }, top: CardItem[], ctx: Ctx, today: string): any {
@@ -94,7 +94,7 @@ export function homeCard(stats: { open: number; overdue: number; waiting: number
   }
   if (!top.length)  sections.push({ widgets: [{ decoratedText: { startIcon: icon(ctx, 'done'), text: '<b>All clear</b>', bottomLabel: 'Open an email to see what it contains.', wrapText: true } }] });
   sections.push({ widgets: [{ buttonList: { buttons: [{ text: 'Open dashboard', type: 'FILLED', onClick: { openLink: { url: `${ctx.base}/items` } } }, linkButton('Metrics', `${ctx.base}/metrics`)] } }] });
-  return { header: { title: 'Promise Keeper', subtitle: 'Never lose a promise', imageUrl: `${ctx.base}/logo.png`, imageType: 'CIRCLE' }, sections };
+  return { header: { title: 'Your promises', subtitle: 'Never lose a promise', imageUrl: `${ctx.base}/logo.png`, imageType: 'CIRCLE' }, sections };
 }
 
 export function editCard(it: CardItem, ctx: Ctx): any {

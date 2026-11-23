@@ -1,7 +1,7 @@
 """Builds docs/promo/promise-keeper-promo.mp4: a narrated, animated, Google-style product video. Every visual is generated here.
     python scripts/make-promo-video.py            full build (voice, music, render, mux)
     python scripts/make-promo-video.py --preview  write one still per scene to docs/promo/preview/ (no video)
-Voice: Windows "Microsoft David Desktop" (male, en-US) through System.Speech. Needs Pillow and ffmpeg.
+Voice: Microsoft neural en-US-GuyNeural (male) via the edge-tts package (pip install edge-tts). Needs Pillow and ffmpeg.
 The people and company are fictional. The Outlook scene is a vision, not a shipped feature.
 """
 import math
@@ -643,16 +643,18 @@ def run(cmd, **kw):
     return subprocess.run(cmd, check=True, capture_output=True, text=True, **kw)
 
 
+VOICE = "en-US-GuyNeural"  # male, energetic (Microsoft neural, via edge-tts)
+
+
 def make_voice():
     TMP.mkdir(parents=True, exist_ok=True)
     durs = []
     for idx, (name, text) in enumerate(SCENES):
         raw, wav = TMP / f"{idx:02d}_{name}_raw.wav", TMP / f"{idx:02d}_{name}.wav"
         if not wav.exists():
-            safe = text.replace("'", "''")
-            ps = ("Add-Type -AssemblyName System.Speech; $s = New-Object System.Speech.Synthesis.SpeechSynthesizer; $s.SelectVoice('Microsoft David Desktop'); "
-                  f"$s.Rate = -1; $s.Volume = 100; $s.SetOutputToWaveFile('{raw}'); $s.Speak('{safe}'); $s.Dispose()")
-            run(["powershell", "-NoProfile", "-Command", ps])
+            mp3 = TMP / f"{idx:02d}_{name}.mp3"
+            run([sys.executable, "-m", "edge_tts", "--voice", VOICE, "--rate=+10%", "--pitch=+4Hz", "--text", text, "--write-media", str(mp3)])
+            raw = mp3
             run(["ffmpeg", "-y", "-i", str(raw), "-ar", "44100", "-ac", "2", "-af", "highpass=f=90,acompressor=threshold=-20dB:ratio=3:makeup=3,loudnorm=I=-16:TP=-1.5:LRA=7", str(wav)])
         with wave.open(str(wav)) as w:
             durs.append(w.getnframes() / w.getframerate())

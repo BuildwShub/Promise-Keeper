@@ -13,28 +13,85 @@ It finds what *you* promised, what others asked of *you*, hard deadlines, and wh
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%2B%20RLS-3ECF8E?logo=supabase&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Gemini-3.5%20Flash--Lite-8E75B2?logo=googlegemini&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-152%20passing-2EA44F)
+![Tests](https://img.shields.io/badge/tests-156%20passing-2EA44F)
 
-[How it works](#-how-it-works) · [Features](#-features) · [Architecture](#-architecture) · [Quick start](#-quick-start) · [Security](#-security--privacy) · [Status](#-project-status)
+[The problem](#-the-problem) · [See it work](#-see-it-work) · [The numbers](#-does-it-actually-work-the-numbers) · [How it works](#-how-it-works) · [Features](#-features) · [Architecture](#-architecture) · [Quick start](#-quick-start) · [Security](#-security--privacy) · [Status](#-project-status)
 
 </div>
 
 ---
 
-## 💡 The idea
+## 💡 The problem
 
-A missed promise costs trust, and promises hide in plain sight: *"I'll send the deck by Friday"* in a Sent email, *"Can you review this by EOD?"* in an Inbox email, *"Report is on the way"* from someone who then goes quiet.
+Work runs on email, and email is a terrible place to keep commitments.
 
-Promise Keeper turns those sentences into a small, honest to-do list:
+- You write *"I'll send the deck by Friday"* in a reply, close the tab, and it exists nowhere else.
+- A client writes *"Can you review this by EOD?"* between 40 other messages.
+- Someone tells you *"Report is on the way"*, then goes quiet, and nothing reminds you to chase.
 
-| It finds | Example | Where it lives |
+To-do apps only know what you type into them. Gmail's own tools look at your **Inbox**. The promises *you* make live in your **Sent** folder, and nothing reads that. Missed commitments cost trust, deals and time, and almost nobody tracks them reliably.
+
+**Promise Keeper reads both sides of your mail, finds every commitment, and turns each into one line you can accept, edit or dismiss:**
+
+| It finds | Example sentence | What happens when you accept |
 | --- | --- | --- |
-| 🟣 **My promise** | "I'll send you the deck by Friday" | Tasks, with a link back to the email |
-| 🟠 **Request to me** | "Can you review the draft by EOD?" | Tasks |
-| 🔴 **Deadline** | "Semester fee due 20 Nov" | Tasks **and** Calendar |
-| 🔵 **Waiting on** | "Report is on the way" (they owe you) | Tasks, with a follow-up nudge |
+| 🟣 **My promise** | "I'll send you the deck by Friday" | Google Task with a link back to the email |
+| 🟠 **Request to me** | "Can you review the draft by EOD?" | Google Task |
+| 🔴 **Deadline** | "Semester fee due 20 Nov" | Task **and** an all-day Calendar event |
+| 🔵 **Waiting on** | "Report is on the way" (they owe *you*) | Task, plus a one-tap follow-up **draft** you review before sending |
 
-Nothing is added without your say-so: **you press Accept, Edit or Dismiss.** It even understands Hinglish ("theek hai, kal tak bhej dunga").
+Every item shows the **exact sentence from the email that triggered it**, so you can trust it at a glance. Nothing is added without your say-so, and it understands Hinglish too ("theek hai, kal tak bhej dunga").
+
+**Who it's for:** founders, freelancers, managers and anyone whose commitments live in their inbox.
+
+---
+
+## 👀 See it work
+
+**Open an email: the promise is already extracted, with the sentence that proves it.** Accept it, edit it, draft a follow-up, or dismiss it, without leaving Gmail.
+
+<p align="center"><img src="docs/images/sidebar-in-gmail.png" alt="Gmail with the Promise Keeper side panel showing a 'waiting on' item extracted from the open email" width="900"></p>
+
+<table>
+<tr>
+<td align="center" width="34%"><b>Home card</b><br>what's open, overdue, and who owes you<br><br><img src="docs/images/sidebar-home.png" alt="Promise Keeper home card" width="260"></td>
+<td align="center" width="66%"><b>Morning digest</b><br>one email: overdue · today · this week · waiting on others<br><br><img src="docs/images/digest-email.png" alt="Promise Keeper morning digest email" width="560"></td>
+</tr>
+</table>
+
+<p align="center"><b>The same items on the web dashboard</b> (Accept / Edit / Draft follow-up / Dismiss)<br><br><img src="docs/images/items-dashboard.png" alt="Items dashboard" width="380"></p>
+
+---
+
+## 📊 Does it actually work? The numbers
+
+A tool that reads your mail has to earn trust, so every prompt change is scored against **106 real emails I labelled by hand**. Most of them (97) contain *nothing* to extract: marketing mail, automated notifications, everyday human messages and five deliberate traps. That is on purpose. It makes **false alarms measurable**, which is what decides whether you keep using a tool like this.
+
+<p align="center"><img src="docs/images/eval-set.svg" alt="What the evaluation set contains" width="820"></p>
+
+| Metric (prompt v2, 106 labelled emails) | Result | What it means |
+| --- | --- | --- |
+| **Precision** | **100%** (7 of 7 shown items correct) | It raised **0 false alarms** across 97 emails that had no commitment |
+| **Recall** | **77.8%** (7 of 9 real commitments found) | It misses roughly 1 in 5 |
+| **Date accuracy** | **100%** | Due dates (including "Friday", "by Monday", "kal tak") resolved correctly |
+| **Gate** (precision ≥ 85% **and** date accuracy ≥ 85%) | ✅ **PASS** | The bar a prompt must clear before it ships |
+
+**Iterating on evidence, not vibes.** The first prompt failed the gate (precision 83%, recall 56%). Reading the individual misses led to prompt v2: it stops treating promotional deadlines as tasks and counts automated action-required notices as requests. Precision went **83% → 100%** and recall **56% → 78%** (last v1 run on 101 labelled emails, first full v2 run on 106).
+
+<p align="center"><img src="docs/images/eval-progress.svg" alt="Precision, recall and date accuracy across 7 evaluation runs" width="820"></p>
+
+| Item type | Found | Missed | False alarms |
+| --- | --- | --- | --- |
+| My promise | 2 | 0 | 0 |
+| Deadline | 1 | 0 | 0 |
+| Request to me | 4 | 1 | 0 |
+| Waiting on | 0 | 1 | 0 |
+
+**Same results on both runtimes.** The Stage B web app re-ran the evaluation through its own pipeline and reproduced the Apps Script add-on's numbers **exactly** (precision 1.0, recall 0.778, date accuracy 1.0). That is the point of sharing the extraction modules between the two.
+
+<p align="center"><img src="docs/images/eval-runs.png" alt="The /admin/eval page listing runs and the pass/fail gate" width="560"></p>
+
+> **Honest limits.** Only **9 of the 106 emails contain a real commitment**, so recall rests on 9 examples and one more miss would move it by about 11 points. The strong claim is the *zero false alarms across 97 emails*; the recall figure is directional. Growing the set of real positive examples is the next measurement step. Real-world acceptance and on-time rates need weeks of use and are tracked on the `/metrics` page.
 
 ---
 
@@ -171,7 +228,7 @@ Click-by-click guides: [`docs/stage-b-setup.md`](docs/stage-b-setup.md) (account
 
 ```bash
 npm test                       # 89 tests · shared modules and the Sheet migration parser
-cd web && npm test             # 63 tests · crypto, JWT, add-on token checks, cards, digest, nudge, eval, extraction, deletion
+cd web && npm test             # 67 tests · crypto, JWT, add-on token checks, cards, digest, nudge, eval, extraction, deletion
 ```
 
 ---

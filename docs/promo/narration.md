@@ -12,6 +12,7 @@ Every claim is true of the product as built. The Outlook scene is a stated visio
 | 4b | Use case: accept | One tap on Accept, and it lands in Google Tasks. Deadlines go on her calendar too. |
 | 4c | Use case: requests | Then her manager asks her to review a deck by end of day. And a supplier says they'll ship an order on Monday. Both appear instantly, labelled: what she owes, and what she's waiting on. |
 | 4d | Use case: digest | Every morning, one digest shows what's overdue, what's due today, and who owes her. |
+| 4d2 | Dashboard | On the dashboard, everything is grouped by when it is due. Click a tile to filter. And every number comes with its formula, one tap away. |
 | 4e | Use case: nudge | When the supplier goes quiet, one tap writes a polite follow-up draft. She reviews it. Promise Keeper never sends anything for her. |
 | 5 | Trust | And it has to be trustworthy. Every item quotes the sentence it came from. Nothing is added until you accept it. We tested it on one hundred and six real emails. Ninety-seven had nothing to find, and it raised zero false alarms. |
 | 6 | Who it is for | For employees, nothing slips between meetings. For managers, a clear picture of what is owed. For freelancers, every client promise tracked and every invoice chased. For creators, every sponsor deliverable and deadline, handled. |

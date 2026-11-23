@@ -9,15 +9,9 @@ It finds what *you* promised, what others asked of *you*, hard deadlines, and wh
 
 <br>
 
-<a href="docs/promo/promise-keeper-promo.mp4"><img src="docs/promo/poster.png" alt="Watch the 2 minute 47 second narrated story" width="760"></a>
+<a href="docs/promo/promise-keeper-promo.mp4"><img src="docs/promo/poster.png" alt="Watch the 2 minute 25 second product walkthrough" width="760"></a>
 
-<sub><b>Watch the story</b> (narrated, 2:13) · <a href="docs/promo/narration.md">script</a> · quick silent version below</sub>
-
-<br>
-
-<img src="docs/images/demo.gif" alt="Walkthrough: the problem, an email with the extracted promise, the morning digest, the dashboard and the evaluation numbers" width="760">
-
-<sub>Walkthrough built from real screenshots. Want to see it live? <a href="docs/demo-script.md">Recording script</a>.</sub>
+<sub><b>Product walkthrough</b> (narrated, 2:25) · <a href="docs/promo/narration.md">script</a> · <a href="#-how-the-design-evolved">how the design evolved (1:40 video)</a></sub>
 
 <br>
 
@@ -27,9 +21,9 @@ It finds what *you* promised, what others asked of *you*, hard deadlines, and wh
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%2B%20RLS-3ECF8E?logo=supabase&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Gemini-3.5%20Flash--Lite-8E75B2?logo=googlegemini&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-156%20passing-2EA44F)
+![Tests](https://img.shields.io/badge/tests-157%20passing-2EA44F)
 
-[The problem](#-the-problem) · [See it work](#-see-it-work) · [The numbers](#-does-it-actually-work-the-numbers) · [How it works](#-how-it-works) · [Features](#-features) · [Architecture](#-architecture) · [Quick start](#-quick-start) · [Security](#-security--privacy) · [Status](#-project-status)
+[The problem](#-the-problem) · [See it work](#-see-it-work) · [Design](#-how-the-design-evolved) · [The numbers](#-does-it-actually-work-the-numbers) · [How it works](#-how-it-works) · [Features](#-features) · [Architecture](#-architecture) · [Quick start](#-quick-start) · [Security](#-security--privacy) · [Status](#-project-status)
 
 </div>
 
@@ -64,16 +58,40 @@ Every item shows the **exact sentence from the email that triggered it**, so you
 
 **Open an email: the promise is already extracted, with the sentence that proves it.** Accept it, edit it, draft a follow-up, or dismiss it, without leaving Gmail.
 
-<p align="center"><img src="docs/images/sidebar-in-gmail.png" alt="Gmail with the Promise Keeper side panel showing a 'waiting on' item extracted from the open email" width="900"></p>
-
 <table>
 <tr>
-<td align="center" width="34%"><b>Home card</b><br>what's open, overdue, and who owes you<br><br><img src="docs/images/sidebar-home.png" alt="Promise Keeper home card" width="260"></td>
-<td align="center" width="66%"><b>Morning digest</b><br>one email: overdue · today · this week · waiting on others<br><br><img src="docs/images/digest-email.png" alt="Promise Keeper morning digest email" width="560"></td>
+<td align="center" width="36%"><b>Gmail sidebar</b><br>date first, type by icon and colour, the exact quote<br><br><img src="docs/images/ui-sidebar.png" alt="Promise Keeper sidebar card: date, type, person, quote, Accept / Edit / Dismiss" width="300"></td>
+<td align="center" width="64%"><b>Dashboard</b><br>grouped by when it is due; the summary tiles filter in one click<br><br><img src="docs/images/ui-dashboard.png" alt="Dashboard grouped by due date with calendar tiles and filter tiles" width="560"></td>
+</tr>
+<tr>
+<td colspan="2" align="center"><b>Morning digest</b><br>four numbers first, late items flagged, one button per row<br><br><img src="docs/images/ui-digest.png" alt="Morning digest email with four count tiles and colour-coded rows" width="620"></td>
+</tr>
+<tr>
+<td colspan="2" align="center"><b>Metrics</b><br>a plain-English summary, green / amber / red rings, formulas one tap away behind the <b>i</b><br><br><img src="docs/images/ui-metrics.png" alt="Metrics page with a summary sentence and traffic-light rings" width="620"></td>
+</tr>
+<tr>
+<td colspan="2" align="center"><b>Trends</b><br>interactive graphs with a date range you control<br><br><img src="docs/images/ui-trends.png" alt="Interactive trend graphs" width="620"></td>
 </tr>
 </table>
 
-<p align="center"><b>The same items on the web dashboard</b> (Accept / Edit / Draft follow-up / Dismiss)<br><br><img src="docs/images/items-dashboard.png" alt="Items dashboard" width="380"></p>
+<sub>Images show the current design with example data (the people and emails are invented), rendered from the same design the app uses.</sub>
+
+---
+
+## 🎨 How the design evolved
+
+The first version worked but made people *read*. The redesign makes them *see*: one look across every screen, dates and types readable at a glance, one primary action per card, and details one tap away behind an **i** icon.
+
+<a href="docs/promo/promise-keeper-evolution.mp4"><img src="docs/promo/poster-evolution.png" alt="Watch how the design evolved, 1 minute 40 seconds" width="620"></a>
+
+<sub>Version 1 versus now (video, 1:40). Each pair below is Version 1 on the left, today on the right.</sub>
+
+<p align="center"><img src="docs/images/pair-sidebar.png" alt="Sidebar: Version 1 versus now" width="760"></p>
+<p align="center"><img src="docs/images/pair-dashboard.png" alt="Dashboard: Version 1 versus now" width="760"></p>
+<p align="center"><img src="docs/images/pair-digest.png" alt="Morning digest: Version 1 versus now" width="760"></p>
+<p align="center"><img src="docs/images/pair-metrics.png" alt="Metrics: Version 1 versus now" width="760"></p>
+
+The design options I compared before choosing (card layouts, logos, wordmarks, Metrics and Eval pages) are in [`docs/design/`](docs/design/).
 
 ---
 
@@ -143,8 +161,10 @@ Because the real set has only 9 positives, I wrote **76 invented emails** with a
 - **One-tap nudge drafts** — a polite follow-up is created as a **Gmail draft**. It never sends on your behalf.
 - **"Did they deliver?"** — when a counterparty replies in a thread you were waiting on, the item is flagged for you.
 - **Honest accuracy** — an evaluation harness with a pass/fail gate measures precision, recall and date accuracy before any prompt change ships.
-- **Metrics that matter** — accept rate, edit rate, on-time rate (week 1 vs week 4), digest retention (D7/D30).
-- **Web dashboard** — `/items`, `/metrics` and `/settings` (including **Delete my data**) for the same data.
+- **Metrics that matter** — accept rate, edit rate, on-time rate (week 1 vs week 4), digest retention (D7/D30), with green / amber / red rings, a plain-English summary and every formula behind an **i**.
+- **Interactive trends** — five graphs (items found, item types, what is due next, digest habit, accuracy by prompt version) with a date range you control.
+- **Web dashboard** — `/items` (grouped by due date, summary tiles that filter), `/metrics` and `/settings` (including **Delete my data**) for the same data.
+- **Google-style design** — one white, four-colour look across the sidebar, dashboard, digest and metrics.
 - **Privacy first** — full email bodies are **never stored**; refresh tokens are encrypted at rest.
 
 ---

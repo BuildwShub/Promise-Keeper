@@ -32,3 +32,9 @@ eval/.cache-synthetic.json
 # promo video build files
 docs/promo/_tmp/
 docs/promo/preview/
+docs/promo/_tmp_evo/
+docs/promo/preview-evolution/
+.devlog
+.devlog2
+banner.png
+web/AGENTS.md

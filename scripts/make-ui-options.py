@@ -144,4 +144,5 @@ def option_final():
         y += 8
     c.save("docs/design/option-final.png")
 
-option_a(); option_b(); option_c(); option_final(); print("ok")
+if __name__ == "__main__":
+    option_a(); option_b(); option_c(); option_final(); print("ok")

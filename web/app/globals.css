@@ -125,3 +125,25 @@ h1 .info { margin-left: 8px; }
 
 .wm b { font-weight: 700; }
 .wm .keeper { color: #5f6368; font-weight: 400; }
+
+/* ---- Metrics (A+ v3) ---- */
+.summary { background: #e8f0fe; color: #1967d2; border-radius: 20px; padding: 18px 22px; margin: 14px 0 20px; }
+.summary b { display: block; font-size: 1.3rem; } .summary span { font-size: .92rem; }
+.mrow3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 14px; }
+.mrow4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.mc { background: var(--card); border-radius: 20px; box-shadow: var(--shadow); padding: 16px 20px; }
+.mc.empty { background: transparent; box-shadow: none; border: 1.5px solid #dadce0; }
+.mc-h { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-weight: 500; font-size: .92rem; }
+.mc-v { display: block; font-size: 1.9rem; font-weight: 700; margin: 6px 0 2px; }
+.mc-sub { color: var(--muted); font-size: .82rem; }
+.mc.empty .mc-sub { color: #9aa0a6; }
+.mc.big { text-align: center; padding-bottom: 20px; }
+.mc.big .mc-h { text-align: left; }
+.ring { position: relative; width: 120px; height: 120px; margin: 12px auto; }
+.ring svg { display: block; } .ring b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+.msec { border: 0; padding: 0; margin: 26px 0 10px; font-size: 1rem; font-weight: 700; }
+.wide-row { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+.legend { display: flex; gap: 22px; flex-wrap: wrap; color: #80868b; font-size: .8rem; margin: 22px 0 0; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+.mc .info div { right: -8px; left: auto; }
+@media (max-width: 760px) { .mrow3, .mrow4 { grid-template-columns: 1fr 1fr; } }

@@ -63,7 +63,7 @@ export default async function Items({ searchParams }: { searchParams: Promise<{ 
   const today = todayIso();
   const count = (t: string) => all.filter((i) => STATUSES[t].includes(i.status)).length;
 
-  const COLOR: Record<string, string> = { my_promise: '#7b3fc4', request_to_me: '#e37400', deadline: '#d93025', waiting_on: '#1a73e8' };
+  const COLOR: Record<string, string> = { my_promise: '#4285F4', request_to_me: '#FBBC04', deadline: '#EA4335', waiting_on: '#34A853' };
   const open = all.filter((i) => STATUSES.open.includes(i.status));
   const nOver = open.filter((i) => i.due && Dates.bucket(i.due, today) === 'overdue').length;
   const nToday = open.filter((i) => i.due && Dates.bucket(i.due, today) === 'today').length;
@@ -75,7 +75,7 @@ export default async function Items({ searchParams }: { searchParams: Promise<{ 
     <main className="flat">
       <h1>Your promises</h1>
       <p className="muted">What you promised, what was asked of you, deadlines, and what others owe you.</p>
-      <div className="tiles">{T(nOver, 'Overdue', '#d93025')}{T(nToday, 'Due today', '#e37400')}{T(nReview, 'To review', '#1a73e8')}{T(nWait, 'Waiting on others', '#188038')}</div>
+      <div className="tiles">{T(nOver, 'Overdue', '#EA4335')}{T(nToday, 'Due today', '#F9AB00')}{T(nReview, 'To review', '#4285F4')}{T(nWait, 'Waiting on others', '#34A853')}</div>
       <div className="tabs">
         {Object.keys(STATUSES).map((t) => (
           <a key={t} href={`/items?tab=${t}`} className={`tab${t === tab ? ' on' : ''}`}>{t[0].toUpperCase() + t.slice(1)} ({count(t)})</a>
@@ -87,7 +87,7 @@ export default async function Items({ searchParams }: { searchParams: Promise<{ 
       {items.map((it) => {
         const overdue = it.due && it.status !== 'done' && Dates.bucket(it.due, today) === 'overdue';
         return (
-          <section key={it.id} className="item" style={{ ['--c' as string]: COLOR[it.type] ?? '#1a73e8' }}>
+          <section key={it.id} className="item" style={{ ['--c' as string]: COLOR[it.type] ?? '#4285F4' }}>
             <div className="chips">
               <span className="chip">{TYPE_LABEL[it.type] ?? it.type}</span>
               <span className={`chip status${it.status === 'accepted' ? ' ok' : ''}`}>{it.status === 'accepted' ? 'Accepted' : it.status.replace('_', ' ')}{it.confidence < 0.6 ? ' · suggestion' : ''}</span>

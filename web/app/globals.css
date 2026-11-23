@@ -1,8 +1,7 @@
 /* Google-style design tokens: light first, dark follows the system. */
-:root { --bg: #f8f9fa; --fg: #202124; --muted: #5f6368; --accent: #1a73e8; --border: #e0e3e7; --card: #ffffff; --soft: #f1f3f4; --green: #188038; --red: #d93025; --orange: #e37400; --purple: #7b3fc4; --shadow: 0 1px 2px rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15); }
-@media (prefers-color-scheme: dark) { :root { --bg: #17181a; --fg: #e8eaed; --muted: #9aa0a6; --accent: #8ab4f8; --border: #3c4043; --card: #202124; --soft: #2a2b2e; --shadow: 0 1px 3px rgba(0,0,0,.6); } }
+:root { color-scheme: light; --bg: #ffffff; --fg: #202124; --muted: #5f6368; --blue: #4285F4; --red: #EA4335; --yellow: #FBBC04; --green: #34A853; --accent: #4285F4; --border: #e8eaed; --card: #ffffff; --soft: #f1f3f4; --orange: #FBBC04; --purple: #4285F4; --shadow: 0 1px 2px rgba(60,64,67,.25), 0 1px 6px rgba(60,64,67,.12); }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.55; }
+body { margin: 0; background: #f8f9fa;  color: var(--fg); line-height: 1.55; }
 main { max-width: 860px; margin: 24px auto 0; padding: 28px 28px 36px; background: var(--card); border-radius: 20px; box-shadow: var(--shadow); }
 main.flat { background: transparent; box-shadow: none; padding: 24px 16px 8px; }
 h1 { font-size: 2rem; font-weight: 500; letter-spacing: -.01em; margin: 0 0 6px; }
@@ -10,13 +9,15 @@ h2 { font-size: 1.1rem; font-weight: 500; margin: 30px 0 8px; padding-top: 18px;
 p, li { color: var(--fg); }
 .muted { color: var(--muted); }
 a { color: var(--accent); }
+.appbar::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, #4285F4 0 25%, #EA4335 25% 50%, #FBBC04 50% 75%, #34A853 75%); }
 .appbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 28px; padding: 10px 24px; background: var(--card); box-shadow: 0 1px 3px rgba(60,64,67,.2); flex-wrap: wrap; }
+.brand b { font-weight: 500; }
 .brand { display: flex; align-items: center; gap: 10px; font-size: 1.15rem; font-weight: 500; color: var(--fg) !important; text-decoration: none; }
 .brand img { border-radius: 8px; }
 .appbar nav { display: flex; gap: 4px; flex-wrap: wrap; }
 .appbar nav a { padding: 8px 16px; border-radius: 20px; text-decoration: none; color: var(--muted); font-weight: 500; font-size: .92rem; }
 .appbar nav a:hover { background: var(--soft); }
-.appbar nav a.on { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+.appbar nav a.on { background: #e8f0fe; color: #1967d2; }
 .foot { text-align: center; color: var(--muted); font-size: .85rem; padding: 28px 16px 40px; }
 .hero { text-align: center; padding: 30px 0 8px; }
 .hero img { border-radius: 22px; box-shadow: var(--shadow); }
@@ -53,6 +54,7 @@ h1 { font-weight: 700; letter-spacing: -.01em; }
 .tab.on { background: var(--accent); color: #fff; }
 .item { background: var(--card); border-radius: 16px; box-shadow: var(--shadow); padding: 16px 18px; margin: 12px 0; border-left: 6px solid var(--c, var(--accent)); }
 .chips { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.item[style*='FBBC04'] .chip:not(.status) { color: #b06000; }
 .chip { display: inline-block; padding: 3px 12px; border-radius: 14px; font-size: .78rem; font-weight: 700; background: color-mix(in srgb, var(--c, var(--accent)) 14%, transparent); color: var(--c, var(--accent)); }
 .chip.status { background: var(--soft); color: var(--muted); font-weight: 600; }
 .chip.ok { background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green); }
@@ -71,6 +73,7 @@ button.primary { background: var(--accent); color: #fff; }
 .notice { background: color-mix(in srgb, var(--green) 12%, var(--card)); border-radius: 12px; padding: 10px 14px; }
 @media (max-width: 600px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
 
-button.primary, .btn { color: #fff; }
-@media (prefers-color-scheme: dark) { button.primary, .btn { color: #202124 !important; } }
 button[type=submit]:not(.primary) { }
+
+button.primary, .btn { color: #fff !important; }
+.wm span:nth-child(1){color:#4285F4}.wm span:nth-child(2){color:#EA4335}.wm span:nth-child(3){color:#FBBC04}.wm span:nth-child(4){color:#4285F4}.wm span:nth-child(5){color:#34A853}.wm span:nth-child(6){color:#EA4335}

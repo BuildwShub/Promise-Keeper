@@ -8,10 +8,10 @@ const n = (v: string | null) => String(Math.min(999, Math.max(0, Math.floor(Numb
 export async function GET(req: Request) {
   const q = new URL(req.url).searchParams;
   const tiles = [
-    { v: n(q.get('o')), l: 'Overdue', c: '#d93025' },
-    { v: n(q.get('t')), l: 'Due today', c: '#e37400' },
-    { v: n(q.get('r')), l: 'To review', c: '#1a73e8' },
-    { v: n(q.get('w')), l: 'Waiting', c: '#188038' },
+    { v: n(q.get('o')), l: 'Overdue', c: '#EA4335' },
+    { v: n(q.get('t')), l: 'Due today', c: '#FBBC04' },
+    { v: n(q.get('r')), l: 'To review', c: '#4285F4' },
+    { v: n(q.get('w')), l: 'Waiting', c: '#34A853' },
   ];
   return new ImageResponse(
     (

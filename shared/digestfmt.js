@@ -43,7 +43,7 @@ var DigestFmt = (function () {
       var l = threadLink(it.threadId, opts.accountEmail);
       return opts.trackBase ? opts.trackBase + '?e=click&i=' + encodeURIComponent(it.itemId) + uidParam + '&u=' + encodeURIComponent(l) : l;
     }
-    var COLORS = { Overdue: '#d93025', 'Due today': '#e37400', 'Due this week': '#1a73e8', 'Waiting on others': '#188038' };
+    var COLORS = { Overdue: '#EA4335', 'Due today': '#F9AB00', 'Due this week': '#4285F4', 'Waiting on others': '#34A853' };
     function row(x, name) {
       var it = x.it, c = COLORS[name];
       var meta = [];
@@ -59,7 +59,7 @@ var DigestFmt = (function () {
     var sections = [['Overdue', overdue], ['Due today', dueToday], ['Due this week', week], ['Waiting on others', waiting]];
     var tiles = [['Overdue', counts.overdue], ['Due today', counts.today], ['Due this week', counts.week], ['Waiting on others', counts.waiting]];
     var html = '<div style="background:#f1f3f4;padding:24px 12px;font-family:Roboto,Arial,sans-serif"><table role="presentation" align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto"><tr><td style="background:#ffffff;border-radius:16px;padding:24px">' +
-      '<div style="font-size:13px;font-weight:700;color:#1a73e8;letter-spacing:.5px">PROMISE KEEPER</div>' +
+      '<div style="font-size:13px;font-weight:700;letter-spacing:.5px"><span style="color:#4285F4">PROMISE</span> <span style="color:#EA4335">KEEPER</span></div>' +
       '<div style="font-size:26px;font-weight:700;color:#202124;margin:6px 0 2px">Good morning</div>' +
       '<div style="font-size:14px;color:#5f6368;margin-bottom:18px">Here is what needs you today &middot; ' + esc(today) + '</div>' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="6" style="margin:0 -6px 14px"><tr>' +

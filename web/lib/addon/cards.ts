@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Pure builders for Workspace add-on card JSON (HTTP endpoints). No I/O, so they are easy to test. */
 
-export const TYPE_COLOR: Record<string, string> = { my_promise: '#7b3fc4', request_to_me: '#e37400', deadline: '#d93025', waiting_on: '#1a73e8' };
+export const TYPE_COLOR: Record<string, string> = { my_promise: '#4285F4', request_to_me: '#B06000', deadline: '#EA4335', waiting_on: '#34A853' };
 export const TYPE_LABEL: Record<string, string> = { my_promise: 'I promised', request_to_me: 'Asked of me', deadline: 'Deadline', waiting_on: 'Waiting on them' };
 
 export interface CardItem {
@@ -46,15 +46,15 @@ export function itemSection(it: CardItem, ctx: Ctx, today: string): any {
   const color = TYPE_COLOR[it.type] ?? '#5f6368';
   const late = !!it.due && it.status !== 'done' && it.due < today;
   const widgets: any[] = [
-    { textParagraph: { text: `<font color="${color}"><b>${esc(TYPE_LABEL[it.type] ?? it.type)}</b></font> · ${it.status === 'accepted' ? '<font color="#188038"><b>Accepted</b></font>' : it.status === 'suggested' ? 'Suggested' : esc(it.status.replace('_', ' '))}${it.confidence < 0.6 ? ' · suggestion' : ''}` } },
+    { textParagraph: { text: `<font color="${color}"><b>${esc(TYPE_LABEL[it.type] ?? it.type)}</b></font> · ${it.status === 'accepted' ? '<font color="#34A853"><b>Accepted</b></font>' : it.status === 'suggested' ? 'Suggested' : esc(it.status.replace('_', ' '))}${it.confidence < 0.6 ? ' · suggestion' : ''}` } },
     { decoratedText: { startIcon: icon(ctx, TYPE_ICON[it.type] ?? 'suggested'), text: `<b>${esc(it.what)}</b>${it.counterparty_name ? ` (${esc(it.counterparty_name)})` : ''}`, bottomLabel: dueLine(it, today), wrapText: true } },
     { textParagraph: { text: `<i>"${esc(it.evidence)}"</i>` } },
   ];
-  if (late) widgets.push({ textParagraph: { text: '<font color="#d93025"><b>Overdue</b></font>' } });
+  if (late) widgets.push({ textParagraph: { text: '<font color="#EA4335"><b>Overdue</b></font>' } });
   if (it.status === 'accepted') {
     widgets.push({ divider: {} });
-    widgets.push({ decoratedText: { startIcon: icon(ctx, 'tasks'), topLabel: 'Google Tasks', text: it.task_id ? '<font color="#188038"><b>Task created</b></font>' : 'Task pending', wrapText: true } });
-    if (it.due) widgets.push({ decoratedText: { startIcon: icon(ctx, 'calendar'), topLabel: 'Google Calendar', text: it.event_id ? `<font color="#188038"><b>Event on ${esc(it.due)}</b></font>` : 'No calendar event for this item', wrapText: true } });
+    widgets.push({ decoratedText: { startIcon: icon(ctx, 'tasks'), topLabel: 'Google Tasks', text: it.task_id ? '<font color="#34A853"><b>Task created</b></font>' : 'Task pending', wrapText: true } });
+    if (it.due) widgets.push({ decoratedText: { startIcon: icon(ctx, 'calendar'), topLabel: 'Google Calendar', text: it.event_id ? `<font color="#34A853"><b>Event on ${esc(it.due)}</b></font>` : 'No calendar event for this item', wrapText: true } });
   }
   if (buttons.length) widgets.push({ buttonList: { buttons } });
   return { widgets };

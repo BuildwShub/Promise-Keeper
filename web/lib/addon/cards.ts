@@ -85,8 +85,8 @@ export function threadCard(items: CardItem[], ctx: Ctx, today: string): any {
 
 export function homeCard(stats: { open: number; overdue: number; waiting: number; suggested: number; today?: number }, top: CardItem[], ctx: Ctx, today: string): any {
   const banner = `${ctx.base}/api/addon/banner?o=${stats.overdue}&t=${stats.today ?? 0}&r=${stats.suggested}&w=${stats.waiting}`;
-  const sections: any[] = [{ widgets: [{ image: { imageUrl: banner, altText: `${stats.overdue} overdue, ${stats.today ?? 0} due today, ${stats.suggested} to review, ${stats.waiting} waiting` } }] }];
-  if (stats.suggested) sections.push({ widgets: [{ decoratedText: { startIcon: icon(ctx, 'suggested'), text: `<b>${stats.suggested} suggestion${stats.suggested === 1 ? '' : 's'}</b> waiting for you`, bottomLabel: 'Open the dashboard to accept or dismiss', wrapText: true } }] });
+  const sections: any[] = [{ widgets: [{ image: { onClick: { openLink: { url: `${ctx.base}/items?tab=open` } }, imageUrl: banner, altText: `${stats.overdue} overdue, ${stats.today ?? 0} due today, ${stats.suggested} to review, ${stats.waiting} waiting` } }] }];
+  if (stats.suggested) { const review = { openLink: { url: `${ctx.base}/items?tab=open&filter=review` } }; sections.push({ widgets: [{ decoratedText: { startIcon: icon(ctx, 'suggested'), text: `<b>${stats.suggested} suggestion${stats.suggested === 1 ? '' : 's'}</b> waiting for you`, bottomLabel: 'Tap to review them in the dashboard', wrapText: true, onClick: review, button: { text: 'Review', onClick: review } } }] }); }
   const order: ('overdue' | 'today' | 'week' | 'later')[] = ['overdue', 'today', 'week', 'later'];
   for (const k of order) {
     const g = top.filter((it) => bucketOf(it.due, today) === k);

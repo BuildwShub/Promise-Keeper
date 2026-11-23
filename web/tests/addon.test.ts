@@ -90,6 +90,7 @@ describe('cards', () => {
     expect(buttons(editCard(item(), ctx).sections[0])).toEqual(['Save', 'Cancel']);
   });
   test('home card shows counts', () => expect(JSON.stringify(homeCard({ open: 3, overdue: 1, waiting: 2, suggested: 2 }, [], ctx, '2026-11-22'))).toContain('r=2'));
+  test('suggestions row links to the filtered dashboard', () => expect(JSON.stringify(homeCard({ open: 3, overdue: 0, waiting: 1, suggested: 2 }, [], ctx, '2026-11-22'))).toContain('/items?tab=open&filter=review'));
   test('response wrappers', () => {
     expect(showCard({ a: 1 })).toEqual({ action: { navigations: [{ pushCard: { a: 1 } }] } });
     expect(replaceCard({ a: 1 }, 'hi')).toEqual({ renderActions: { action: { navigations: [{ updateCard: { a: 1 } }], notification: { text: 'hi' } } } });

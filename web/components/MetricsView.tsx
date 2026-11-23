@@ -32,7 +32,7 @@ function Ring({ p }: { p: number | null }) {
   );
 }
 
-export default function MetricsView({ rows }: { rows: MetricRow[] }) {
+export default function MetricsView({ rows, children }: { rows: MetricRow[]; children?: React.ReactNode }) {
   const m = (k: string) => rows.find((r) => r.metric === k);
   const num = (k: string) => (typeof m(k)?.value === 'number' ? (m(k)!.value as number) : null);
   const acc = frac(m('accept_rate')?.detail), ot = frac(m('on_time_rate')?.detail), prec = num('extraction_precision');
@@ -103,6 +103,8 @@ export default function MetricsView({ rows }: { rows: MetricRow[] }) {
         {count('digest_retention_d7', 'Retention, day 7', 'Back after a week', true)}
         {count('digest_retention_d30', 'Retention, day 30', 'Back after a month', true)}
       </div>
+
+      {children}
 
       <p className="legend"><span><i style={{ background: GREEN }} />Green 90%+</span><span><i style={{ background: AMBER }} />Amber 80 to 89%</span><span><i style={{ background: RED }} />Red under 80%</span></p>
     </main>

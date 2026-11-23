@@ -95,6 +95,10 @@ The design options I compared before choosing (card layouts, logos, wordmarks, M
 
 ---
 
+> **Product thinking:** read the [Product Requirements Document](docs/PRD.md) (problem, evidence, users, competitors, metrics, risks, open questions) and the [test cases](docs/TEST-CASES.md) (157 automated tests, manual acceptance cases, and a usability test script). Every assumption is labelled.
+
+---
+
 ## 📊 Does it actually work? The numbers
 
 A tool that reads your mail has to earn trust, so every prompt change is scored against **106 real emails I labelled by hand**. Most of them (97) contain *nothing* to extract: marketing mail, automated notifications, everyday human messages and five deliberate traps. That is on purpose. It makes **false alarms measurable**, which is what decides whether you keep using a tool like this.

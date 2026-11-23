@@ -91,8 +91,12 @@ export async function drainQueue(db: SupabaseClient, user: UserCtx, token: strin
       }
     }
   };
-  await Promise.all(Array.from({ length: Math.min(CONFIG.CONCURRENCY, queue.length) }, worker));
-  stats.remaining = Math.max(0, queue.length - next);
+  // Hard stop: a Gemini rate-limit retry can sleep 5 + 10 + 20 s, which would carry the run past Vercel's 60 s limit.
+  // Stop waiting shortly after the soft deadline. Unfinished emails stay in the queue (deleted only after success), so nothing is lost.
+  const hardStop = new Promise<'hard'>((r) => setTimeout(() => r('hard'), Math.max(0, deadlineMs + CONFIG.HARD_STOP_GRACE_MS - Date.now())));
+  const all = Promise.all(Array.from({ length: Math.min(CONFIG.CONCURRENCY, queue.length) }, worker));
+  if ((await Promise.race([all.then(() => 'done' as const), hardStop])) === 'hard') stats.timedOut = true;
+  stats.remaining = Math.max(0, queue.length - stats.processed - stats.errors);
   return stats;
 }
 

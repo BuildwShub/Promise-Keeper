@@ -16,5 +16,6 @@ export const CONFIG = {
   MAX_ATTEMPTS: 3,
   // Stop starting new emails at 28 s: with the free-tier Gemini spacing (4.5 s per call) emails already in progress can add 15 s or more, and Vercel stops a run at 60 s.
   RUN_BUDGET_MS: 28_000,
+  HARD_STOP_GRACE_MS: 12_000, // after the soft deadline, how long to wait for emails already in progress before returning anyway
   WATCH_RENEW_BEFORE_MS: 2 * 24 * 3600 * 1000,
 };

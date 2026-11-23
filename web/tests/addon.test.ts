@@ -77,7 +77,7 @@ describe('cards', () => {
   test('possibly resolved items ask if they delivered', () => expect(buttons(itemSection(item({ status: 'possibly_resolved' }), ctx, '2026-11-22'))[0]).toBe('They delivered'));
   test('done items have no buttons', () => expect(itemSection(item({ status: 'done' }), ctx, '2026-11-22').widgets.some((w: any) => w.buttonList)).toBe(false));
   test('text is HTML-escaped', () => expect(JSON.stringify(itemSection(item(), ctx, '2026-11-22'))).toContain('Pay &lt;fee&gt;'));
-  test('overdue is flagged', () => expect(JSON.stringify(itemSection(item(), ctx, '2026-11-22'))).toContain('(overdue)'));
+  test('overdue is flagged', () => expect(JSON.stringify(itemSection(item(), ctx, '2026-11-22'))).toContain('Overdue'));
   test('button actions point at the action endpoint with ids', () => {
     const b = itemSection(item(), ctx, '2026-11-22').widgets.find((w: any) => w.buttonList).buttonList.buttons[0];
     expect(b.onClick.action.function).toBe('https://x/api/addon/action');

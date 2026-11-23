@@ -63,7 +63,7 @@ async function homeData(db: SupabaseClient, user: AddonUser) {
     waiting: items.filter((i) => i.type === 'waiting_on').length,
     today: items.filter((i) => i.due === today).length,
   };
-  return { stats, top: items.filter((i) => i.due).slice(0, 5), today };
+  return { stats, top: items.filter((i) => i.due).slice(0, 8), today };
 }
 
 /** Run one add-on request for an authenticated user and return the JSON to send back. */

@@ -26,6 +26,22 @@ const linkButton = (text: string, url: string) => ({ text, onClick: { openLink: 
 
 export const card = (title: string, sections: any[], subtitle?: string) => ({ header: { title, ...(subtitle ? { subtitle } : {}), imageUrl: `${LOGO}`, imageType: 'CIRCLE' }, sections });
 
+const DOW = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'], MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+export function bucketOf(due: string | null, today: string): 'overdue' | 'today' | 'week' | 'later' | 'none' {
+  if (!due) return 'none';
+  const d = Math.round((Date.parse(due + 'T00:00:00Z') - Date.parse(today + 'T00:00:00Z')) / 86400000);
+  return d < 0 ? 'overdue' : d === 0 ? 'today' : d <= 7 ? 'week' : 'later';
+}
+const BUCKET_LABEL = { overdue: 'Overdue', today: 'Due today', week: 'This week', later: 'Later', none: 'No date' };
+const BUCKET_COLOR = { overdue: '#EA4335', today: '#B06000', week: '#4285F4', later: '#5f6368', none: '#5f6368' };
+/** "MON 23 NOV" in the bucket colour, plus the bucket name. */
+export function dateLine(due: string | null, today: string, status: string): string {
+  if (!due) return '<font color="#5f6368"><b>NO DATE</b></font>';
+  const d = new Date(due + 'T00:00:00Z');
+  const b = status === 'done' ? 'later' : bucketOf(due, today);
+  return `<font color="${BUCKET_COLOR[b]}"><b>${DOW[d.getUTCDay()]} ${d.getUTCDate()} ${MON[d.getUTCMonth()]}</b> · ${BUCKET_LABEL[b]}</font>`;
+}
+
 function dueLine(it: CardItem, today: string): string {
   if (it.due) return `Due ${it.due}${it.status !== 'done' && it.due < today ? ' (overdue)' : ''}${it.due_text ? ` · "${esc(it.due_text)}"` : ''}`;
   return it.needs_date ? 'Needs a date' : 'No date';
@@ -44,13 +60,11 @@ export function itemSection(it: CardItem, ctx: Ctx, today: string): any {
     buttons.push(button(ctx, 'Dismiss', { ...p, op: 'dismiss' }));
   }
   const color = TYPE_COLOR[it.type] ?? '#5f6368';
-  const late = !!it.due && it.status !== 'done' && it.due < today;
   const widgets: any[] = [
-    { textParagraph: { text: `<font color="${color}"><b>${esc(TYPE_LABEL[it.type] ?? it.type)}</b></font> · ${it.status === 'accepted' ? '<font color="#34A853"><b>Accepted</b></font>' : it.status === 'suggested' ? 'Suggested' : esc(it.status.replace('_', ' '))}${it.confidence < 0.6 ? ' · suggestion' : ''}` } },
-    { decoratedText: { startIcon: icon(ctx, TYPE_ICON[it.type] ?? 'suggested'), text: `<b>${esc(it.what)}</b>${it.counterparty_name ? ` (${esc(it.counterparty_name)})` : ''}`, bottomLabel: dueLine(it, today), wrapText: true } },
+    { textParagraph: { text: dateLine(it.due, today, it.status) } },
+    { decoratedText: { startIcon: icon(ctx, TYPE_ICON[it.type] ?? 'suggested'), topLabel: `<font color="${color}"><b>${esc(TYPE_LABEL[it.type] ?? it.type)}</b></font>${it.status === 'accepted' ? ' · <font color="#34A853"><b>Accepted</b></font>' : it.confidence < 0.6 ? ' · low confidence' : ''}`, text: `<b>${esc(it.what)}</b>`, bottomLabel: it.counterparty_name ? esc(it.counterparty_name) : it.needs_date ? 'Needs a date' : undefined, wrapText: true } },
     { textParagraph: { text: `<i>"${esc(it.evidence)}"</i>` } },
   ];
-  if (late) widgets.push({ textParagraph: { text: '<font color="#EA4335"><b>Overdue</b></font>' } });
   if (it.status === 'accepted') {
     widgets.push({ divider: {} });
     widgets.push({ decoratedText: { startIcon: icon(ctx, 'tasks'), topLabel: 'Google Tasks', text: it.task_id ? '<font color="#34A853"><b>Task created</b></font>' : 'Task pending', wrapText: true } });
@@ -73,8 +87,12 @@ export function homeCard(stats: { open: number; overdue: number; waiting: number
   const banner = `${ctx.base}/api/addon/banner?o=${stats.overdue}&t=${stats.today ?? 0}&r=${stats.suggested}&w=${stats.waiting}`;
   const sections: any[] = [{ widgets: [{ image: { imageUrl: banner, altText: `${stats.overdue} overdue, ${stats.today ?? 0} due today, ${stats.suggested} to review, ${stats.waiting} waiting` } }] }];
   if (stats.suggested) sections.push({ widgets: [{ decoratedText: { startIcon: icon(ctx, 'suggested'), text: `<b>${stats.suggested} suggestion${stats.suggested === 1 ? '' : 's'}</b> waiting for you`, bottomLabel: 'Open the dashboard to accept or dismiss', wrapText: true } }] });
-  if (top.length) sections.push({ header: 'Coming up', widgets: top.map((it) => ({ decoratedText: { startIcon: icon(ctx, TYPE_ICON[it.type] ?? 'suggested'), topLabel: `<font color="${TYPE_COLOR[it.type] ?? '#5f6368'}"><b>${esc(TYPE_LABEL[it.type] ?? it.type)}</b></font>`, text: `<b>${esc(it.what)}</b>`, bottomLabel: dueLine(it, today), wrapText: true } })) });
-  else sections.push({ widgets: [{ decoratedText: { startIcon: icon(ctx, 'done'), text: '<b>All clear</b>', bottomLabel: 'Open an email to see what it contains.', wrapText: true } }] });
+  const order: ('overdue' | 'today' | 'week' | 'later')[] = ['overdue', 'today', 'week', 'later'];
+  for (const k of order) {
+    const g = top.filter((it) => bucketOf(it.due, today) === k);
+    if (g.length) sections.push({ header: `${BUCKET_LABEL[k]} (${g.length})`, widgets: g.map((it) => ({ decoratedText: { startIcon: icon(ctx, TYPE_ICON[it.type] ?? 'suggested'), topLabel: dateLine(it.due, today, it.status), text: `<b>${esc(it.what)}</b>`, bottomLabel: it.counterparty_name ? esc(it.counterparty_name) : esc(TYPE_LABEL[it.type] ?? it.type), wrapText: true } })) });
+  }
+  if (!top.length)  sections.push({ widgets: [{ decoratedText: { startIcon: icon(ctx, 'done'), text: '<b>All clear</b>', bottomLabel: 'Open an email to see what it contains.', wrapText: true } }] });
   sections.push({ widgets: [{ buttonList: { buttons: [{ text: 'Open dashboard', type: 'FILLED', onClick: { openLink: { url: `${ctx.base}/items` } } }, linkButton('Metrics', `${ctx.base}/metrics`)] } }] });
   return { header: { title: 'Promise Keeper', subtitle: 'Never lose a promise', imageUrl: `${ctx.base}/logo.png`, imageType: 'CIRCLE' }, sections };
 }

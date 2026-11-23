@@ -61,6 +61,7 @@ async function homeData(db: SupabaseClient, user: AddonUser) {
     suggested: items.filter((i) => i.status === 'suggested').length,
     overdue: items.filter((i) => i.due && i.due < today).length,
     waiting: items.filter((i) => i.type === 'waiting_on').length,
+    today: items.filter((i) => i.due === today).length,
   };
   return { stats, top: items.filter((i) => i.due).slice(0, 5), today };
 }

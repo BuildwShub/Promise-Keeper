@@ -29,23 +29,18 @@ export default async function Metrics() {
   const { rows } = await computeMetrics(db, uid, me?.timezone ?? 'Asia/Kolkata');
 
   return (
-    <main>
+    <main className="flat">
       <h1>Metrics</h1>
       <p className="muted">Computed live from your items, decisions and events. Rates show n/a until there is enough data to judge.</p>
-      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-        <thead>
-          <tr><th align="left">Metric</th><th align="left">Value</th><th align="left">How it is computed</th></tr>
-        </thead>
-        <tbody>
-          {rows.map((r) => (
-            <tr key={r.metric} style={{ borderTop: '1px solid var(--border)' }}>
-              <td style={{ padding: '6px 8px 6px 0' }}>{LABEL[r.metric] ?? r.metric}</td>
-              <td style={{ padding: '6px 8px', fontWeight: 600 }}>{String(r.value)}</td>
-              <td className="muted" style={{ padding: '6px 0' }}>{r.detail}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="mgrid">
+        {rows.map((r) => (
+          <div key={r.metric} className="mcard">
+            <span>{LABEL[r.metric] ?? r.metric}</span>
+            <b>{String(r.value)}</b>
+            <small>{r.detail}</small>
+          </div>
+        ))}
+      </div>
     </main>
   );
 }

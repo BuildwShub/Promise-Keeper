@@ -72,7 +72,7 @@ export default async function Items({ searchParams }: { searchParams: Promise<{ 
   const T = (n: number, l: string, c: string) => <div className="tile"><b style={{ color: c }}>{n}</b><span>{l}</span></div>;
 
   return (
-    <main>
+    <main className="flat">
       <h1>Your promises</h1>
       <p className="muted">What you promised, what was asked of you, deadlines, and what others owe you.</p>
       <div className="tiles">{T(nOver, 'Overdue', '#d93025')}{T(nToday, 'Due today', '#e37400')}{T(nReview, 'To review', '#1a73e8')}{T(nWait, 'Waiting on others', '#188038')}</div>

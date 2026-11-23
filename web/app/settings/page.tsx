@@ -57,7 +57,7 @@ export default async function Settings() {
         <h1>Settings</h1>
         <p className="muted">Sign in with Google to manage Promise Keeper.</p>
         <form action={signInAction}>
-          <button type="submit">Sign in with Google</button>
+          <button type="submit" className="primary">Sign in with Google</button>
         </form>
       </main>
     );
@@ -102,7 +102,7 @@ export default async function Settings() {
         <p>
           <label><input type="checkbox" name="share_metrics" defaultChecked={me.share_metrics} /> Share anonymous usage metrics</label>
         </p>
-        <button type="submit">Save</button>
+        <button type="submit" className="primary">Save</button>
       </form>
 
       <h2>Session</h2>

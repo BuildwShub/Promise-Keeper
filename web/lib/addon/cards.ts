@@ -10,8 +10,11 @@ export interface CardItem {
 }
 export interface Ctx { base: string; threadId?: string; msgId?: string }
 
+const LOGO = (process.env.ADDON_BASE_URL || 'https://promise-keeper-omega.vercel.app').replace(/\/$/, '') + '/logo.png';
 export const esc = (s: string) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+export const TYPE_ICON: Record<string, string> = { my_promise: 'promised', request_to_me: 'asked', deadline: 'deadline', waiting_on: 'waiting' };
+const icon = (ctx: Ctx, name: string) => ({ iconUrl: `${ctx.base}/icons/${name}.png`, altText: name });
 const fn = (ctx: Ctx, params: Record<string, string | undefined>) => ({
   function: `${ctx.base}/api/addon/action`,
   parameters: Object.entries(params).filter(([, v]) => v !== undefined && v !== '').map(([key, value]) => ({ key, value: String(value) })),
@@ -21,7 +24,7 @@ const button = (ctx: Ctx, text: string, params: Record<string, string | undefine
 });
 const linkButton = (text: string, url: string) => ({ text, onClick: { openLink: { url } } });
 
-export const card = (title: string, sections: any[], subtitle?: string) => ({ header: { title, ...(subtitle ? { subtitle } : {}) }, sections });
+export const card = (title: string, sections: any[], subtitle?: string) => ({ header: { title, ...(subtitle ? { subtitle } : {}), imageUrl: `${LOGO}`, imageType: 'CIRCLE' }, sections });
 
 function dueLine(it: CardItem, today: string): string {
   if (it.due) return `Due ${it.due}${it.status !== 'done' && it.due < today ? ' (overdue)' : ''}${it.due_text ? ` · "${esc(it.due_text)}"` : ''}`;
@@ -44,14 +47,14 @@ export function itemSection(it: CardItem, ctx: Ctx, today: string): any {
   const late = !!it.due && it.status !== 'done' && it.due < today;
   const widgets: any[] = [
     { textParagraph: { text: `<font color="${color}"><b>${esc(TYPE_LABEL[it.type] ?? it.type)}</b></font> · ${it.status === 'accepted' ? '<font color="#188038"><b>Accepted</b></font>' : it.status === 'suggested' ? 'Suggested' : esc(it.status.replace('_', ' '))}${it.confidence < 0.6 ? ' · suggestion' : ''}` } },
-    { decoratedText: { startIcon: { knownIcon: it.type === 'waiting_on' ? 'PERSON' : it.type === 'deadline' ? 'CLOCK' : 'BOOKMARK' }, text: `<b>${esc(it.what)}</b>${it.counterparty_name ? ` (${esc(it.counterparty_name)})` : ''}`, bottomLabel: dueLine(it, today), wrapText: true } },
+    { decoratedText: { startIcon: icon(ctx, TYPE_ICON[it.type] ?? 'suggested'), text: `<b>${esc(it.what)}</b>${it.counterparty_name ? ` (${esc(it.counterparty_name)})` : ''}`, bottomLabel: dueLine(it, today), wrapText: true } },
     { textParagraph: { text: `<i>"${esc(it.evidence)}"</i>` } },
   ];
   if (late) widgets.push({ textParagraph: { text: '<font color="#d93025"><b>Overdue</b></font>' } });
   if (it.status === 'accepted') {
     widgets.push({ divider: {} });
-    widgets.push({ decoratedText: { startIcon: { knownIcon: 'CONFIRMATION_NUMBER_ICON' }, topLabel: 'Google Tasks', text: it.task_id ? '<font color="#188038"><b>Task created</b></font>' : 'Task pending', wrapText: true } });
-    if (it.due) widgets.push({ decoratedText: { startIcon: { knownIcon: 'INVITE' }, topLabel: 'Google Calendar', text: it.event_id ? `<font color="#188038"><b>Event on ${esc(it.due)}</b></font>` : 'No calendar event for this item', wrapText: true } });
+    widgets.push({ decoratedText: { startIcon: icon(ctx, 'tasks'), topLabel: 'Google Tasks', text: it.task_id ? '<font color="#188038"><b>Task created</b></font>' : 'Task pending', wrapText: true } });
+    if (it.due) widgets.push({ decoratedText: { startIcon: icon(ctx, 'calendar'), topLabel: 'Google Calendar', text: it.event_id ? `<font color="#188038"><b>Event on ${esc(it.due)}</b></font>` : 'No calendar event for this item', wrapText: true } });
   }
   if (buttons.length) widgets.push({ buttonList: { buttons } });
   return { widgets };
@@ -66,16 +69,14 @@ export function threadCard(items: CardItem[], ctx: Ctx, today: string): any {
   return card('Promise Keeper', items.map((it) => itemSection(it, ctx, today)), `${items.length} item${items.length === 1 ? '' : 's'} found in this conversation`);
 }
 
-export function homeCard(stats: { open: number; overdue: number; waiting: number; suggested: number }, top: CardItem[], ctx: Ctx, today: string): any {
-  const sections: any[] = [{
-    widgets: [
-      { decoratedText: { topLabel: 'Open items', text: `<b>${stats.open}</b>`, bottomLabel: `${stats.suggested} to review · ${stats.overdue} overdue · ${stats.waiting} waiting on others`, wrapText: true } },
-      { buttonList: { buttons: [linkButton('Open dashboard', `${ctx.base}/items`), linkButton('Metrics', `${ctx.base}/metrics`)] } },
-    ],
-  }];
-  if (top.length) sections.push({ header: 'Most urgent', widgets: top.map((it) => ({ decoratedText: { topLabel: TYPE_LABEL[it.type] ?? it.type, text: esc(it.what), bottomLabel: dueLine(it, today), wrapText: true } })) });
-  else sections.push({ widgets: [{ textParagraph: { text: 'Nothing open. Open an email to see what it contains.' } }] });
-  return card('Promise Keeper', sections, 'Home');
+export function homeCard(stats: { open: number; overdue: number; waiting: number; suggested: number; today?: number }, top: CardItem[], ctx: Ctx, today: string): any {
+  const banner = `${ctx.base}/api/addon/banner?o=${stats.overdue}&t=${stats.today ?? 0}&r=${stats.suggested}&w=${stats.waiting}`;
+  const sections: any[] = [{ widgets: [{ image: { imageUrl: banner, altText: `${stats.overdue} overdue, ${stats.today ?? 0} due today, ${stats.suggested} to review, ${stats.waiting} waiting` } }] }];
+  if (stats.suggested) sections.push({ widgets: [{ decoratedText: { startIcon: icon(ctx, 'suggested'), text: `<b>${stats.suggested} suggestion${stats.suggested === 1 ? '' : 's'}</b> waiting for you`, bottomLabel: 'Open the dashboard to accept or dismiss', wrapText: true } }] });
+  if (top.length) sections.push({ header: 'Coming up', widgets: top.map((it) => ({ decoratedText: { startIcon: icon(ctx, TYPE_ICON[it.type] ?? 'suggested'), topLabel: `<font color="${TYPE_COLOR[it.type] ?? '#5f6368'}"><b>${esc(TYPE_LABEL[it.type] ?? it.type)}</b></font>`, text: `<b>${esc(it.what)}</b>`, bottomLabel: dueLine(it, today), wrapText: true } })) });
+  else sections.push({ widgets: [{ decoratedText: { startIcon: icon(ctx, 'done'), text: '<b>All clear</b>', bottomLabel: 'Open an email to see what it contains.', wrapText: true } }] });
+  sections.push({ widgets: [{ buttonList: { buttons: [{ text: 'Open dashboard', type: 'FILLED', onClick: { openLink: { url: `${ctx.base}/items` } } }, linkButton('Metrics', `${ctx.base}/metrics`)] } }] });
+  return { header: { title: 'Promise Keeper', subtitle: 'Never lose a promise', imageUrl: `${ctx.base}/logo.png`, imageType: 'CIRCLE' }, sections };
 }
 
 export function editCard(it: CardItem, ctx: Ctx): any {

@@ -1,15 +1,18 @@
 export default function Home() {
+  const F = (icon: string, t: string, d: string) => <div className="feat"><img src={`/icons/${icon}.png`} alt="" /><b>{t}</b><span className="muted">{d}</span></div>;
   return (
     <main>
-      <h1>Promise Keeper for Gmail</h1>
-      <p className="muted">Most email tools read your inbox: what others ask of you. Promise Keeper also reads your Sent folder: what you promised others, and what others promised you. When a promise slips, it helps you follow up.</p>
-      <h2>What it does</h2>
-      <ul>
-        <li>Finds promises, requests, hard deadlines and things you are waiting on, with the sentence that triggered each.</li>
-        <li>Shows them in the Gmail sidebar. You press Accept, Edit or Dismiss. Nothing is added without your say-so.</li>
-        <li>Accepted items go to Google Tasks (and deadlines to Google Calendar) with a link back to the email.</li>
-        <li>A morning digest email, and one-tap follow-up drafts that you review before sending.</li>
-      </ul>
+      <div className="hero">
+        <img src="/logo.png" alt="" width={84} height={84} />
+        <h1>Never lose a promise in your inbox</h1>
+        <p className="muted">Most email tools read your inbox. Promise Keeper also reads your Sent folder: what you promised, what you were asked, and what others owe you. When a promise slips, it helps you follow up.</p>
+        <p><a className="btn" href="/items">Open my promises</a> <a className="btn ghost" href="/settings">Sign in</a></p>
+      </div>
+      <div className="grid3">
+        {F('promised', 'Finds every commitment', 'Promises, requests, deadlines and things you are waiting on, each with the sentence it came from.')}
+        {F('tasks', 'Tasks and Calendar', 'Press Accept and it lands in Google Tasks, with deadlines on your Calendar. Nothing is added without you.')}
+        {F('waiting', 'Follow-ups and digest', 'A designed morning digest, and one-tap follow-up drafts that you review before sending.')}
+      </div>
       <p className="muted">This app is in testing and is not yet verified by Google. Read the <a href="/privacy">privacy policy</a> to see exactly what is accessed, sent and stored.</p>
     </main>
   );

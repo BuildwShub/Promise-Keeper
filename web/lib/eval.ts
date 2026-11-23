@@ -33,7 +33,10 @@ export async function runEval(db: SupabaseClient, user: { id: string; email: str
       await db.from('eval_cache').upsert({ user_id: user.id, prompt_version: CONFIG.PROMPT_VERSION, model: CONFIG.GEMINI_MODEL, msg_id: r.msg_id, raw: items }, { onConflict: 'user_id,prompt_version,model,msg_id' });
     }
   };
-  await Promise.all(Array.from({ length: Math.min(CONFIG.CONCURRENCY, todo.length) }, worker));
+  // Hard stop shortly after the soft budget: Gemini rate-limit retries can sleep 5 + 10 + 20 s and would carry the run past Vercel's 60 s limit.
+  // Answers already cached are kept; the next call resumes from them.
+  const hardStop = new Promise<void>((r) => setTimeout(r, budgetMs + CONFIG.HARD_STOP_GRACE_MS - (Date.now() - started)));
+  await Promise.race([Promise.all(Array.from({ length: Math.min(CONFIG.CONCURRENCY, todo.length) }, worker)), hardStop]);
 
   const done = rows.filter((x: any) => raw.has(x.r.msg_id));
   const pending = rows.length - done.length;

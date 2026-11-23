@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { userClient } from '@/lib/supabase';
 import { CONFIG } from '@/lib/config';
+import EvalRunner from '@/components/EvalRunner';
 
 export const metadata = { title: 'Eval · Promise Keeper' };
 export const dynamic = 'force-dynamic';
@@ -27,7 +28,7 @@ export default async function EvalPage({ searchParams }: { searchParams: Promise
       <p className="muted">Re-runs the model over your hand-labelled emails with the same scoring and pass/fail gate as the add-on. Use it before changing the prompt.</p>
       <p>Current prompt <b>{CONFIG.PROMPT_VERSION}</b> · model <b>{CONFIG.GEMINI_MODEL}</b> · eval set: <b>{(set ?? []).length}</b> emails, <b>{labelled}</b> labelled.</p>
       {notice && <p style={{ padding: 8, border: '1px solid var(--border)', borderRadius: 6 }}>{notice}</p>}
-      <form method="post" action="/api/eval"><button type="submit" disabled={!labelled}>Run eval</button></form>
+      <EvalRunner labelled={labelled} />
       {!labelled && <p className="muted">The eval set is empty. Import it from your Stage A sheet with <code>scripts/migrate-sheet.js</code>.</p>}
 
       <h2>Recent runs</h2>

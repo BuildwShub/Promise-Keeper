@@ -15,6 +15,11 @@ It finds what *you* promised, what others asked of *you*, hard deadlines, and wh
 
 <br>
 
+**🔗 Live app: [promise-keeper-omega.vercel.app](https://promise-keeper-omega.vercel.app)**<br>
+Access is by request, because the app is in Google's testing mode and only approved accounts can sign in. To try it, [message me on LinkedIn](https://www.linkedin.com/in/foxsalsa) with the Gmail address you would sign in with.
+
+<br>
+
 ![Gmail Add-on](https://img.shields.io/badge/Gmail-Add--on-EA4335?logo=gmail&logoColor=white)
 ![Apps Script](https://img.shields.io/badge/Google-Apps%20Script-4285F4?logo=google&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)

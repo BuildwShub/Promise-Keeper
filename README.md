@@ -5,7 +5,6 @@
 # Promise Keeper for Gmail
 
 <br>
-
 **🔗 Live app: [promise-keeper-omega.vercel.app](https://promise-keeper-omega.vercel.app)**<br>
 <sub>Access is by request (the app is in Google's testing mode). <a href="https://www.linkedin.com/in/foxsalsa">Message me on LinkedIn</a> with the Gmail address you would sign in with.</sub>
 

@@ -4,19 +4,19 @@ Three kinds of testing are described here. The status column is honest: **Pass**
 
 | Part | What | Where it runs |
 | --- | --- | --- |
-| A | Automated tests (157) | `npx jest` in the repo root (89) and in `web/` (68) |
+| A | Automated tests (165) | `npx jest` in the repo root (93) and in `web/` (72) |
 | B | Manual end-to-end and acceptance cases | A real Gmail account and the live app |
 | C | Usability test script (5 participants) | Not run yet |
 
-Last updated: 23 Nov 2026.
+Last updated: 24 Nov 2026.
 
 ---
 
-## A. Automated tests (157 passing)
+## A. Automated tests (165 passing)
 
 Run them: `npm test` in the repo root, then `cd web && npm test`.
 
-### A1. Shared extraction modules (root, 89 tests)
+### A1. Shared extraction modules (root, 93 tests)
 These modules run identically in the Apps Script add-on and the Next.js app.
 
 | File | Tests | What it proves |
@@ -29,8 +29,9 @@ These modules run identically in the Apps Script add-on and the Next.js app.
 | `tests/digest.test.js` | 14 | Morning digest sections and ordering, HTML is escaped, tracking links, nudge text |
 | `tests/metrics.test.js` | 13 | Accept rate, edit rate, on-time rate (week 1 and week 4), digest retention |
 | `tests/migrate.test.js` | 9 | Importing the old spreadsheet data into the database |
+| `tests/prompt.test.js` | 4 | The prompt keeps the "whose task is it?" rules: an instruction sent to someone else is waiting on, never my promise |
 
-### A2. Web app (web/, 68 tests)
+### A2. Web app (web/, 72 tests)
 
 | File | Tests | What it proves |
 | --- | --- | --- |
@@ -40,15 +41,17 @@ These modules run identically in the Apps Script add-on and the Next.js app.
 | `web/tests/guard.test.ts` | 4 | The push-notification secret is checked, including URL-encoded variants |
 | `web/tests/history.test.ts` | 4 | Only Inbox and Sent mail is processed; promotions, social, spam, trash and drafts are skipped |
 | `web/tests/intake.test.ts` | 11 | Message parsing, sent-date handling, secret comparison, extraction wiring |
+| `web/tests/scan.test.ts` | 4 | First scan queues the newest 7 days first; scan progress counts; a stuck email cannot push a run past its time limit |
 | `web/tests/lib.test.ts` | 10 | AES-256-GCM token encryption round trip and tamper detection; user JWT signing; shared modules load in the web app |
 | `web/tests/users.test.ts` | 3 | Delete-my-data removes everything; user ids are hashed in the deletion log |
 
 ### A3. Extraction quality (evaluation, not unit tests)
 | Test | Command | Result |
 | --- | --- | --- |
-| 106 labelled real emails (gate: precision at least 85% and date accuracy at least 85%) | `/admin/eval` page, or `Eval` in the add-on | Precision 100%, recall 77.8%, date accuracy 100%, **gate pass** |
-| 76 synthetic emails, strict scoring | `node eval/build-synthetic.js` then `node eval/run-synthetic.js` | Precision 92.3%, recall 90.6%, date accuracy 100%, gate pass |
-| Same results on both runtimes | Run the eval through the web pipeline | Reproduced the add-on's numbers exactly |
+| 106 labelled real emails (gate: precision at least 85% and date accuracy at least 85%) | `/admin/eval` page, or `Eval` in the add-on | Prompt v3: precision 90%, recall 100%, date accuracy 100%, **gate pass** (v2: 100%, 77.8%, 100%) |
+| 76 synthetic emails, strict scoring | `node eval/build-synthetic.js` then `node eval/run-synthetic.js` | Prompt v3: precision 94.2%, recall 92.5%, date accuracy 100%, gate pass (v2: 92.3%, 90.6%, 100%) |
+| 25 "whose task is it?" edge cases (sent instructions, own promises, both in one email, received requests, nothing to find) | `node eval/run-edge.js` | v3: 25 of 25 correct; v2: 17 of 25. One expected answer was corrected by me after review |
+| Same results on both runtimes (checked on v2) | Run the eval through the web pipeline | Reproduced the add-on's numbers exactly |
 
 ---
 
@@ -64,7 +67,7 @@ Pre-condition for all: signed in with a Google account that is a test user of th
 | TC-03 | A deadline is found | Receive "Fee due 20 Nov" | "Deadline" item with the right date | Pass |
 | TC-04 | Waiting-on is found | Receive "The report is on the way" | "Waiting on them" item | Pass |
 | TC-05 | Hinglish | Send "Theek hai, kal tak bhej dunga" | Item due tomorrow | Pass |
-| TC-06 | Nothing to find | Open a marketing or automated email | No item, no false alarm | Pass (0 false alarms in 97 labelled emails) |
+| TC-06 | Nothing to find | Open a marketing or automated email | No item, no false alarm | Pass on the examples tried; on the 106-email set v3 showed 1 wrong item in 10 shown (v2: 0) |
 | TC-07 | New mail appears quickly | Send a test promise | Item appears within about a minute without clicking anything | Pass |
 | TC-08 | Rescan is safe | Scan the same message twice | No duplicate items | Automated (dedup tests); live rescan not re-run |
 

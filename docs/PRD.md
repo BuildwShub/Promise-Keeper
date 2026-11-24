@@ -17,7 +17,7 @@
 
 **What exists today.** A Gmail side-panel add-on, a web dashboard, Google Tasks and Calendar sync, a morning digest email, one-tap follow-up drafts, and an evaluation harness that scores the extractor before any change ships.
 
-**Headline evidence (measured):** on 106 hand-labelled real emails the extractor shows 100% precision (0 false alarms across 97 emails with nothing to find), 77.8% recall (7 of 9 real commitments) and 100% date accuracy. A second test of 76 synthetic emails gives 92.3% precision and 90.6% recall under strict scoring.
+**Headline evidence (measured):** on 106 hand-labelled real emails the current prompt (v3) shows 90% precision (9 of 10 shown items correct), 100% recall (all 9 real commitments found) and 100% date accuracy. The previous prompt (v2) had 100% precision and 77.8% recall; v3 traded a little precision for recall after a real mis-tagging bug. A second test of 76 synthetic emails gives 94.2% precision and 92.5% recall under strict scoring.
 
 **Biggest gaps (honest):** no external user evidence yet, only 9 real positive examples in the labelled set, and the app is unverified by Google, so it is capped at 100 test users.
 
@@ -116,10 +116,10 @@ Meeting invites, attachments, Outlook, mobile-specific UI, auto-sending any emai
 | Layer | Metric | Definition | Current value | Target |
 | --- | --- | --- | --- | --- |
 | **North star** | On-time rate | Completed by the due date / items with a due date that can be judged | 67% (2 of 3; tiny sample) | **Proposed: 80% or more over 30 days with 20+ users** |
-| Quality gate | Extraction precision | Shown items that were correct (labelled set) | **100%** (7 of 7) | Gate: 85% or more (met) |
+| Quality gate | Extraction precision | Shown items that were correct (labelled set, prompt v3) | **90%** (9 of 10) | Gate: 85% or more (met) |
 | Quality gate | Date accuracy | Dates that matched the label | **100%** | Gate: 85% or more (met) |
-| Quality | Recall | Real items found | **77.8%** (7 of 9) | Proposed: 85% or more on a larger set |
-| Trust | False alarms | Items shown that were not real | **0 in 97** emails | Proposed: under 5% of shown items |
+| Quality | Recall | Real items found | **100%** (9 of 9; small set) | Proposed: 85% or more on a larger set |
+| Trust | False alarms | Items shown that were not real | **1 of 10** shown items (v2: 0) | Proposed: under 10% of shown items |
 | Engagement | Accept rate | Accepted / (accepted + dismissed) | 57% (4 of 7; includes test clicks) | Proposed: 60% or more |
 | Engagement | Digest engagement | Days with a digest open or click | 3 of 6 sent | Proposed: opened on 50% of days |
 | Retention | Digest retention D7 / D30 | Engaged in days 7-13 / 30-36 after the first digest | Not enough data | Proposed: D30 above 30% |
@@ -187,9 +187,10 @@ These are **design decisions made on judgement and comparison of options, not on
 | Extraction engine and labelled set | Built; gate set at precision 85% or more and date accuracy 85% or more before any UI work |
 | Prompt v1 | **Failed the gate**: precision 83%, recall 56% |
 | Prompt v2 | Fixed after reading the misses (promotional deadlines no longer tasks; automated action-required notices count as requests): precision **100%**, recall **78%**, gate passed |
+| Prompt v3 | Fixed a real mis-tagging bug found by a tester: an instruction the sender wrote to someone else ("Send the required reports by EOD") was tagged as the sender's own promise. Instructions aimed at the recipient are now "waiting on". 25-case edge set: v2 17 of 25, v3 25 of 25 (one expected answer corrected by me). Real set: precision **90%**, recall **100%**, date accuracy 100%, gate passed |
 | Stage A (Apps Script + Sheets) | Gmail sidebar, Tasks and Calendar, digest, nudges, metrics |
 | Stage B (Vercel + Supabase) | Push-based intake, web dashboard, digest, same evaluation results as Stage A |
-| Synthetic test (76 emails) | Precision 92.3%, recall 90.6%, date accuracy 100%. Four of four "false alarms" and four of five "misses" were the same four emails phrased differently from my labels. Written by me, so less independent. |
+| Synthetic test (76 emails, v3) | Precision 94.2%, recall 92.5%, date accuracy 100% (v2: 92.3%, 90.6%). Three of three "false alarms" and three of four "misses" were the same three emails phrased differently from my labels; one genuine miss. Written by me, and v3 was written after I saw v2's results on it, so not a blind test. |
 | Redesign | New design across sidebar, dashboard, digest, metrics, graphs |
 
 **Key learning:** the biggest quality win came from reading individual failures and fixing the prompt, not from tuning numbers. Building the evaluation first made false alarms measurable, which is the number that decides whether people keep using a tool like this.
@@ -202,7 +203,7 @@ These are **design decisions made on judgement and comparison of options, not on
 | --- | --- | --- | --- |
 | **Gmail restricted scope**: going public needs Google verification and a paid security assessment | Blocks growth past 100 users | Design already stores minimal data, encrypts tokens, never stores bodies; steps in [`google-verification.md`](google-verification.md) | Open |
 | False alarms erode trust | Users stop using it | Suggest-only, evidence quote, confidence threshold, negative examples, gate | Mitigated; watch in real use |
-| Missed commitments (recall 78%, rests on 9 examples) | Users miss items and lose confidence | Grow the real positive set; track in metrics | Open |
+| Wrong or missed items (precision 90%, recall 100%, both rest on 9 real examples) | Users miss items and lose confidence | Grow the real positive set; track in metrics | Open |
 | Privacy concerns about reading email | No adoption | Clear privacy page, delete-my-data, no bodies stored, no auto-send | Mitigated |
 | Dependence on the Gemini API (free-tier limits seen in testing) | Slow or failed extraction at scale | Pacing and backoff now; paid key before inviting others | Open |
 | Platform risk: Google could ship the same feature in Gmail | Reduces the opening | Differentiate on Sent-folder commitments, proof and follow-up; move fast | Open |
@@ -215,7 +216,7 @@ These are **design decisions made on judgement and comparison of options, not on
 **Open questions**
 1. Do people actually lose commitments often enough to want a tool? How often, and what does it cost them?
 2. Which segment feels the pain most: employees, managers, freelancers or creators?
-3. Is 78% recall good enough that people still trust it? What is the acceptable miss rate?
+3. Is 90% precision good enough that people still trust it? How many wrong items before they stop reviewing?
 4. Would people pay, and who pays: the individual or the employer?
 
 **Next steps (proposed)**

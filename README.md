@@ -4,15 +4,16 @@
 
 # Promise Keeper for Gmail
 
-**Most email tools read your inbox. Promise Keeper also reads your Sent folder.**<br>
-It finds what *you* promised, what others asked of *you*, hard deadlines, and what people owe *you* — then helps you keep every one.
-
 <br>
 
 **🔗 Live app: [promise-keeper-omega.vercel.app](https://promise-keeper-omega.vercel.app)**<br>
 <sub>Access is by request (the app is in Google's testing mode). <a href="https://www.linkedin.com/in/foxsalsa">Message me on LinkedIn</a> with the Gmail address you would sign in with.</sub>
 
 <br>
+
+**Most email tools read your inbox. Promise Keeper also reads your Sent folder.**<br>
+It finds what *you* promised, what others asked of *you*, hard deadlines, and what people owe *you* — then helps you keep every one.
+
 
 <a href="docs/promo/promise-keeper-promo.mp4"><img src="docs/promo/poster.png" alt="Watch the 2 minute 25 second product walkthrough" width="760"></a>
 
